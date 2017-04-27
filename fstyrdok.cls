@@ -467,9 +467,30 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
 
 \fancyfoot[L]{}
 \fancyfoot[R]{}
-}% END fstil_page
+}% END fstil_page PAGESTYLE
 
 
+\makeatletter
+\fancypagestyle{plain}{%REDEFINE THE PLAIN PAGE STYLE
+    \pagestyle{fstil_page}
+    
+    \ifboolexpr{togl {isstadgar} or togl {isallapm}}{
+      \pagenumbering{roman} % Romerska siffror i sidnumreringen
+      \fancyhead[L]{%
+      \iftoggle{HeadIsFancy}{%
+      \textcolor{headernfooter}{%
+      \headingfont\textbf{\@title}\\
+      \ifdefstring{\@date}{}{%Om @date är en tom sträng, skriv inte den raden
+}{%Annars skriv ut datumet
+\@date\\}
+Sid. \thepage }
+}{}
+}
+}
+{}
+}% END plain PAGESTYLE 
+
+\makeatother
 
 %=======================================%
 %      LISTMILJÖER FÖR PARAGRAFER       %
