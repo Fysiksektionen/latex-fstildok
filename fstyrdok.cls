@@ -84,26 +84,26 @@
 % Makron för snabb koll mot de olika dokumenttyperna
 \makeatletter
 
-\ifdefstring{\fstyrdok@doctype}{stadgar}{
+\ifdefstring{\fstyrdok@doctype}{stadgar}{ % STADGAR
 \toggletrue{isstadgar}
 \@expandtwoargs\@removeelement{doctype=stadgar}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
 }
 {
-\ifdefstring{\fstyrdok@doctype}{pm}{
+\ifdefstring{\fstyrdok@doctype}{pm}{ %PM
 \toggletrue{ispm}
 \@expandtwoargs\@removeelement{doctype=pm}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
 }
 {
-\ifdefstring{\fstyrdok@doctype}{allapm}{
+\ifdefstring{\fstyrdok@doctype}{allapm}{ % ALLA PM
 \toggletrue{isallapm}
 \@expandtwoargs\@removeelement{doctype=allapm}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
 }
 {
-\ifdefstring{\fstyrdok@doctype}{doc}{
+\ifdefstring{\fstyrdok@doctype}{doc}{ % "VANLIGT" DOKUMENT
 \toggletrue{isdoc}
 \@expandtwoargs\@removeelement{doctype=doc}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
 }
-{
+{ % INGET AV DET = FEL
 \ClassError
             {\@currname}
             {Felaktig dokumenttyp "\fstyrdok@doctype" angedd!}
@@ -135,8 +135,6 @@
 % babel: Avstavning, rubriker på innehållsförteckning m.m., språkanpassat
 \RequirePackage[\fstyrdok@language]{babel}
 \makeatother
-
-
 %fancyhdr: ger kontroll på sidhuvud och sidfot
 \RequirePackage{fancyhdr}
 %lastpage: för att kunna referera till sista sidan
@@ -176,8 +174,6 @@
 \RequirePackage{tabularx}
 %color: Tillåter definition av färger och användning av standard färger genom namnangivelser
 \RequirePackage[usenames,dvipsnames]{color}
-% xcolor: Gör färghantering mycket smidigare
-\RequirePackage[hyperref]{xcolor}
 % hyperref: Skapar bokmärken i pdf-filer, gör hänvisningar till länkar, mm
 \RequirePackage[bookmarks=true,colorlinks=true,linkcolor=headernfooter,urlcolor=headernfooter,linktoc=section]{hyperref}
 
@@ -451,8 +447,8 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
 %Definiera färgen "fysik", enligt stadgarnas CMYK-definition.
 \definecolor{fysik}{cmyk}{0.000, 0.608, 0.831, 0.000}
 %Definiera färgen "orange", enligt stadgarnas definition
-\definecolor{orange}{wave}{612.2}
-\definecolor{dark-blue}{rgb}{0,0,.1}
+%\definecolor{orange}{wave}{612.2}
+%\definecolor{dark-blue}{rgb}{0,0,.1}
 
 
 %Definierar \F  =>  ett snyggt Fysik-F
