@@ -2,16 +2,15 @@
 \ProvidesClass{fstyrdok}
 \renewcommand\@currname{fstyrdok}
 
-% Paket för att kunna ta emot options på formatet key=value
+%kvoption: För att kunna ta emot options på formatet key=value
 \RequirePackage{kvoptions}
 %\SetupKeyvalOptions{family=fstyrdok,prefix=}
+%keyval: 
 \RequirePackage{keyval}
 %etoolbox: (bland annat) för logisk programering med booleans
 \RequirePackage{etoolbox}
 %pgffor: Gör det möjligt att loopa över commandon i listor med \foreach
 \RequirePackage{pgffor}
-
-
 
 
 
@@ -124,7 +123,7 @@
 %           AV KLASSEN SKA FUNGERA              %
 %           (eller som bara är grymma...)           %
 %-----------------------------------------------------------%
-\LoadClass[10pt,a4paper,landscape]{article}
+\LoadClass[10pt,a4paper]{article}
 
 \makeatletter
 \typeout{\@currname}
@@ -200,18 +199,247 @@
 \titleformat*{\subsubsection}{\headingfont\itshape}
 \titlespacing{\subsubsection}{0pt}{*2}{-5pt}
 
-%==========================================%
-%    INSTÄLLNINGAR FÖR MARGINALER OCH ANNAN WHITESPACE       %
-%==========================================%
-%Görs automatiskt av paketen "geometry" och "[parfill]{parskip}"
-\iftoggle{IsLscape}
-{%Ställ om lite marginaler om det är Lscape
-%\addtolength{\textwidth}{4.5cm}
-%\addtolength{\textheight}{-1cm}
-%\addtolength{\oddsidemargin}{-2.5cm}
+
+
+
+
+%-----------------------------------------------------------%
+%           FÄLTDEFINITIONER OCH ANNAT          %
+%           FÖR TITELSIDA, INNEHÅLSFÖRTECKNING      %
+%           OCH ÄNDRINGSHSTORIK             %
+%-----------------------------------------------------------%
+\makeatletter
+
+% Sidavdelare
+\newcommand\HRule[1][1pt]{\rule{\linewidth}{#1}}
+
+% \org{<organisation>}
+\newcommand{\org}[1]{\def\@org{#1}}
+\@ifundefined{@org}{\org{Fysiksektionen, THS}}{}
+
+% Lista över ändringar
+\newcommand\changed[3]{#1 & #2 & #3\\}
+\newcommand\@history{}
+\newcommand\history[1]{
+\renewcommand\@history{
+\begin{tabular}{lll}
+Datum & Sammanträde & Avsnitt\\
+\hline
+#1
+\end{tabular}
 }
-{%Annars gör inget
 }
+
+% Ny definiton av titel
+\renewcommand\maketitle{
+    \hypersetup{pdftitle={\@title},pdfauthor={\@author}}
+    \begin{flushright}
+    \includegraphics[width=3cm]{kugghjul}
+    \vskip 2cm
+    {\LARGE \textsc{\@title} \\ \HRule}
+        {\large \@org}
+    {\small\par Uppdaterat \@date}
+  \end{flushright}
+}
+
+\newcommand\frontmatter{
+    % Sidnummer i romerska siffor
+    \pagenumbering{roman}
+    \pagestyle{plain}
+}
+\newcommand\mainmatter{
+    % Sidnummer i arabiska siffror
+    \pagenumbering{arabic}
+    \pagestyle{fancy}
+}
+
+% Kommando för innehållsförteckning med bokmärke i PDF-filen
+\newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\tableofcontents}
+
+% Enkelt kommando för titelblad och innehållsförteckning
+\ifboolexpr{togl {isstadgar} or togl {isallapm}}
+{ % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
+    \newcommand\ftitlepage
+    {
+        \begin{titlepage}
+        \maketitle
+        \newpage\frontmatter
+        % Visa bara ändringshistoriken först för stadgar
+        \ifboolexpr{togl {isstadgar}}{\showhistory}{}
+        \ftoc
+        \end{titlepage}
+        \newpage\mainmatter
+    }
+}
+{ % Bara ett PM (Titelsida med ändringshistorik)
+    \newcommand\ftitlepage
+    {
+        \begin{titlepage}
+            \maketitle
+            \showhistory
+            \thispagestyle{empty}
+        \end{titlepage}
+    }
+}
+
+% Ändringshistorik
+\ifboolexpr{togl {ispm} or togl {isstadgar}}
+{
+    \newcommand\showhistory{
+    \section*{Ändringshistorik}
+    \@history
+    }
+}
+{
+    \newcommand\showhistory{
+    \subsection*{Ändringshistorik}
+    \@history
+    }
+}
+
+\makeatother
+
+
+
+%===============================%
+%    INSTÄLLNINGAR FÖR SIDHUVUD OCH SIDFOT     %
+%===============================%
+
+\definecolor{headernfooter}{gray}{0.40} %Definierar en gråfärg som är 40% svart,  används i header och footer
+
+\pagenumbering{arabic} % Arabiska siffror i sidnumreringen
+\setlength\headheight{70pt} % Default är 12 pt, men detta passar bra till loggan
+\newlength\logowidth
+\newlength\logoheight
+\newlength\logoxoffset
+\setlength\logoxoffset{0pt}
+\addtolength\voffset{-0.5in}
+\iftoggle{BigLogo}
+{
+ \setlength\logowidth{\headheight}
+ \setlength\headheight{127pt}
+ \setlength\logoheight{\headheight}
+ \addtolength\logoxoffset{20pt}
+ \addtolength\textheight{-40pt}
+}
+{
+ \setlength\logowidth{.55\headheight}
+ \setlength\logoheight{\headheight}
+}
+\renewcommand\headrulewidth{0pt}
+
+
+\setlength\headsep{.5\logowidth}
+
+\fancyheadoffset[R]{.7\logowidth}
+
+\newcommand\logoname{{F_head_logo_noshadow}}
+\rhead{\raisebox{-0.5\height}{\includegraphics[height=\logoheight]{\logoname}}\hspace{\logoxoffset}}
+
+\makeatletter
+\lhead{%
+\iftoggle{HeadIsFancy}{%
+\textcolor{headernfooter}{%
+\headingfont\textbf{\@title}\\
+\ifdefstring{\@date}{}{%Om @date är en tom sträng, skriv inte den raden
+}{%Annars skriv ut datumet
+\@date\\}
+Sid. \thepage~ av { \pageref{LastPage}} }
+}{}
+}
+\makeatother
+
+\chead{}
+\cfoot{
+\iftoggle{HeadIsFancy}{%
+\rule{\textwidth}{0.75pt}
+\textcolor{headernfooter}{
+\footnotesize
+\begin{center}
+\begin{tabular}{p{0.25\paperwidth}p{0.15\paperwidth}p{0.15\paperwidth}p{0.15\paperwidth}}
+Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
+ \F ysiksektionen, THS 100 44 Stockholm &   802411-8948 &   Brinellvägen 89  & { \href{http://www.f.kth.se}{www.f.kth.se} }
+\end{tabular}
+\end{center}
+}
+}{}
+}
+
+\lfoot{}
+\lfoot{}
+\pagestyle{fancy}
+
+
+
+%-----------------------------------------------------------%
+%           LISTMILJÖER FÖR PARAGRAFER          %
+%-----------------------------------------------------------%
+\newenvironment{punkter}{\begin{enumerate}}{\end{enumerate}}
+\newcommand\punkt{\normalfont\item}
+\newcommand\fetpunkt{\normalfont\item\bfseries}
+\newcommand\attpunkt{\normalfont\item\textbf{att}\ }
+\newcommand\tompunkt{\normalfont\item\hspace{1em}}
+
+\newcommand\paragraf[1]{#1 \S}
+\newcommand\setupenumerate[3]{
+    \setenumerate[#1]{label={#2 #3},leftmargin=6em}
+}
+
+\newcommand\resetpunkter{\setupenumerate{1}{\arabic*~\S~}{}}
+
+\setlength\cftsecnumwidth{2.2em}
+\setlength\cftsubsecnumwidth{4em}
+
+\ifboolexpr{togl {ispm} or togl {isstadgar}} % STADGAR ELLER PM
+{
+    \renewcommand\thesection{\arabic{section}~\S~}
+    \renewcommand\thesubsection{\thesection~\arabic{subsection}.}
+    \newcommand\header[1]
+    {
+        \section{#1}
+        \setupenumerate{1}{\thesection}{\arabic*.}
+    }
+    \newcommand\subheader[1]
+    {
+        \subsection{#1}
+        \setupenumerate{1}{\thesection}{\arabic{subsection}.\arabic*.}
+    }
+}{}
+
+\ifboolexpr{togl {isallapm}} % ALLA PM
+{
+    \renewcommand\thesubsection{\arabic{subsection}~\S~}
+    \titleformat{\section}{\bf \sc \Large}{}{0em}{}
+    \renewcommand\thesubsubsection{\thesubsection\ \arabic{subsubsection}}
+    \setupenumerate{1}{\arabic.~\S~}{}
+
+    \newcommand\header[1]
+    {
+        \subsection{#1}
+        \setupenumerate{1}{\thesubsection}{\arabic*.}
+    }
+    \newcommand\subheader[1]
+    {
+        \subsubsection{#1}
+        \setupenumerate{1}{\thesubsubsection}{\arabic*.}
+    }
+    
+    \newcommand\pminput[2]{
+        \newpage
+        \section{#1}
+        \resetpunkter
+        \input{#2}
+        \showhistory
+    }
+}
+{
+}
+
+\setenumerate[2]{label*=\arabic*.}
+\setenumerate[3]{label*=\arabic*.}
+\setenumerate[4]{label*=\arabic*.}
+
+
 
 %==========================%
 %   SEKTIONSRELATERADE KOMMANDON      %
@@ -373,250 +601,3 @@ Fyll i de fem rubrikerna ovan $\&$ fäst kvittot/fakturan synligt på baksidan.}
         \multicolumn{4}{|r|}{\raisebox{-1pt}{TOTALT}} & \vspace{.6\baselineskip} & \\
     \hline
   \end{tabular}}
-
-
-
-
-
-%-----------------------------------------------------------%
-%           FÄLTDEFINITIONER OCH ANNAT          %
-%           FÖR TITELSIDA, INNEHÅLSFÖRTECKNING      %
-%           OCH ÄNDRINGSHSTORIK             %
-%-----------------------------------------------------------%
-\makeatletter
-
-% Sidavdelare
-\newcommand\HRule[1][1pt]{\rule{\linewidth}{#1}}
-
-% \org{<organisation>}
-\newcommand{\org}[1]{\def\@org{#1}}
-\@ifundefined{@org}{\org{Fysiksektionen, THS}}{}
-
-% Lista över ändringar
-\newcommand\changed[3]{#1 & #2 & #3\\}
-\newcommand\@history{}
-\newcommand\history[1]{
-\renewcommand\@history{
-\begin{tabular}{lll}
-Datum & Sammanträde & Avsnitt\\
-\hline
-#1
-\end{tabular}
-}
-}
-
-% Ny definiton av titel
-\renewcommand\maketitle{
-    \hypersetup{pdftitle={\@title},pdfauthor={\@author}}
-    \begin{flushright}
-    \includegraphics[width=3cm]{kugghjul}
-    \vskip 2cm
-    {\LARGE \textsc{\@title} \\ \HRule}
-        {\large \@org}
-    {\small\par Uppdaterat \@date}
-  \end{flushright}
-}
-
-\newcommand\frontmatter{
-    % Sidnummer i romerska siffor
-    \pagenumbering{roman}
-    \pagestyle{plain}
-}
-\newcommand\mainmatter{
-    % Sidnummer i arabiska siffror
-    \pagenumbering{arabic}
-    \pagestyle{fancy}
-}
-
-% Kommando för innehållsförteckning med bokmärke i PDF-filen
-\newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\tableofcontents}
-
-% Enkelt kommando för titelblad och innehållsförteckning
-\ifboolexpr{togl {isstadgar} or togl {isallapm}}
-{ % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
-    \newcommand\ftitlepage
-    {
-        \begin{titlepage}
-        \maketitle
-        \newpage\frontmatter
-        % Visa bara ändringshistoriken först för stadgar
-        \ifboolexpr{togl {isstadgar}}{\showhistory}{}
-        \ftoc
-        \end{titlepage}
-        \newpage\mainmatter
-    }
-}
-{ % Bara ett PM (Titelsida med ändringshistorik)
-    \newcommand\ftitlepage
-    {
-        \begin{titlepage}
-            \maketitle
-            \showhistory
-            \thispagestyle{empty}
-        \end{titlepage}
-    }
-}
-
-% Ändringshistorik
-\ifboolexpr{togl {ispm} or togl {isstadgar}}
-{
-    \newcommand\showhistory{
-    \section*{Ändringshistorik}
-    \@history
-    }
-}
-{
-    \newcommand\showhistory{
-    \subsection*{Ändringshistorik}
-    \@history
-    }
-}
-
-
-\makeatother
-
-
-
-
-
-%===============================%
-%    INSTÄLLNINGAR FÖR SIDHUVUD OCH SIDFOT     %
-%===============================%
-
-\definecolor{headernfooter}{gray}{0.40} %Definierar en gråfärg som är 40% svart,  används i header och footer
-
-\pagenumbering{arabic} % Arabiska siffror i sidnumreringen
-\setlength\headheight{70pt} % Default är 12 pt, men detta passar bra till loggan
-\newlength\logowidth
-\newlength\logoheight
-\newlength\logoxoffset
-\setlength\logoxoffset{0pt}
-\addtolength\voffset{-0.5in}
-\iftoggle{BigLogo}
-{
- \setlength\logowidth{\headheight}
- \setlength\headheight{127pt}
- \setlength\logoheight{\headheight}
- \addtolength\logoxoffset{20pt}
- \addtolength\textheight{-40pt}
-}
-{
- \setlength\logowidth{.55\headheight}
- \setlength\logoheight{\headheight}
-}
-\renewcommand\headrulewidth{0pt}
-
-
-\setlength\headsep{.5\logowidth}
-
-\fancyheadoffset[R]{.7\logowidth}
-
-\newcommand\logoname{{F_head_logo_noshadow}}
-\rhead{\raisebox{-0.5\height}{\includegraphics[height=\logoheight]{\logoname}}\hspace{\logoxoffset}}
-
-\makeatletter
-\lhead{%
-\iftoggle{HeadIsFancy}{%
-\textcolor{headernfooter}{%
-\headingfont\textbf{\@title}\\
-\ifdefstring{\@date}{}{%Om @date är en tom sträng, skriv inte den raden
-}{%Annars skriv ut datumet
-\@date\\}
-Sid. \thepage~ av { \pageref{LastPage}} }
-}{}
-}
-\makeatother
-
-\chead{}
-\cfoot{
-\iftoggle{HeadIsFancy}{%
-\rule{\textwidth}{0.75pt}
-\textcolor{headernfooter}{
-\footnotesize
-\begin{center}
-\begin{tabular}{p{0.25\paperwidth}p{0.15\paperwidth}p{0.15\paperwidth}p{0.15\paperwidth}}
-Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
- \F ysiksektionen, THS 100 44 Stockholm &   802411-8948 &   Brinellvägen 89  & { \href{http://www.f.kth.se}{www.f.kth.se} }
-\end{tabular}
-\end{center}
-}
-}{}
-}
-
-\lfoot{}
-\lfoot{}
-\pagestyle{fancy}
-
-
-
-
-
-
-
-%-----------------------------------------------------------%
-%           LISTMILJÖER FÖR PARAGRAFER          %
-%-----------------------------------------------------------%
-\newenvironment{punkter}{\begin{enumerate}}{\end{enumerate}}
-\newcommand\punkt{\normalfont\item}
-\newcommand\fetpunkt{\normalfont\item\bfseries}
-\newcommand\attpunkt{\normalfont\item\textbf{att}\ }
-\newcommand\tompunkt{\normalfont\item\hspace{1em}}
-
-\newcommand\paragraf[1]{#1 \S}
-\newcommand\setupenumerate[3]{
-    \setenumerate[#1]{label={#2 #3},leftmargin=6em}
-}
-
-\newcommand\resetpunkter{\setupenumerate{1}{\arabic*~\S~}{}}
-
-\setlength\cftsecnumwidth{2.2em}
-\setlength\cftsubsecnumwidth{4em}
-
-\ifboolexpr{togl {ispm} or togl {isstadgar}} % STADGAR ELLER PM
-{
-    \renewcommand\thesection{\arabic{section}~\S~}
-    \renewcommand\thesubsection{\thesection~\arabic{subsection}.}
-    \newcommand\header[1]
-    {
-        \section{#1}
-        \setupenumerate{1}{\thesection}{\arabic*.}
-    }
-    \newcommand\subheader[1]
-    {
-        \subsection{#1}
-        \setupenumerate{1}{\thesection}{\arabic{subsection}.\arabic*.}
-    }
-}{}
-
-\ifboolexpr{togl {isallapm}} % ALLA PM
-{
-    \renewcommand\thesubsection{\arabic{subsection}~\S~}
-    \titleformat{\section}{\bf \sc \Large}{}{0em}{}
-    \renewcommand\thesubsubsection{\thesubsection\ \arabic{subsubsection}}
-    \setupenumerate{1}{\arabic.~\S~}{}
-
-    \newcommand\header[1]
-    {
-        \subsection{#1}
-        \setupenumerate{1}{\thesubsection}{\arabic*.}
-    }
-    \newcommand\subheader[1]
-    {
-        \subsubsection{#1}
-        \setupenumerate{1}{\thesubsubsection}{\arabic*.}
-    }
-    
-    \newcommand\pminput[2]{
-        \newpage
-        \section{#1}
-        \resetpunkter
-        \input{#2}
-        \showhistory
-    }
-}
-{
-}
-
-\setenumerate[2]{label*=\arabic*.}
-\setenumerate[3]{label*=\arabic*.}
-\setenumerate[4]{label*=\arabic*.}
