@@ -33,6 +33,8 @@
 \togglefalse{isallapm}
 \newtoggle{isdoc}
 \togglefalse{isdoc}
+\newcounter{nrofDocTypes}
+\defcounter{nrofDocTypes}{0}
 
 \newtoggle{IsLscape}
 \togglefalse{IsLscape} %Har portrait som default
@@ -53,10 +55,24 @@
 %  OPTIONS FÖR KLASSEN FSEKT-STYRDOK  %
 %=====================================%
 % Options till babel
-% Defaultvärden är satta för att passa för dokument på svenska i skolans IT-miljö.
 \DeclareStringOption[swedish]{language}
 
-\DeclareStringOption[doc]{doctype}
+\DeclareOption{doc}{
+  \toggletrue{isdoc}
+  \addtocounter{nrofDocTypes}{1}
+}
+\DeclareOption{pm}{
+  \toggletrue{ispm}
+  \addtocounter{nrofDocTypes}{1}
+}
+\DeclareOption{allapm}{
+  \toggletrue{isallapm}
+  \addtocounter{nrofDocTypes}{1}
+}
+\DeclareOption{stadgar}{
+  \toggletrue{isstadgar}
+  \addtocounter{nrofDocTypes}{1}
+}
 
 
 %Tar med det angivna datumet på titelsidan och högerjusterar allt
@@ -88,39 +104,47 @@
 %   Post-process options   %
 % ======================== %
 % Makron för snabb koll mot de olika dokumenttyperna
-\makeatletter
+%\makeatletter
+%
+%\newcommand{\removefromunused}[1]{\@expandtwoargs\@removeelement{#1}{\@unusedoptionlist}{\@unusedoptionlist}}
+%
+%\ifdefstring{\fstyrdok@doctype}{stadgar}{ % STADGAR
+%\toggletrue{isstadgar}
+%\removefromunused{doctype=stadgar} %UGLY: Hard remove of "unused" option
+%}
+%{
+%\ifdefstring{\fstyrdok@doctype}{pm}{ %PM
+%\toggletrue{ispm}
+%\removefromunused{doctype=pm} %UGLY: Hard remove of "unused" option
+%}
+%{
+%\ifdefstring{\fstyrdok@doctype}{allapm}{ % ALLA PM
+%\toggletrue{isallapm}
+%\removefromunused{doctype=allapm} %UGLY: Hard remove of "unused" option
+%}
+%{
+%\ifdefstring{\fstyrdok@doctype}{doc}{ % "VANLIGT" DOKUMENT
+%\toggletrue{isdoc}
+%\removefromunused{doctype=doc} %UGLY: Hard remove of "unused" option
+%}
+%{ % INGET AV DET = FEL
+%\ClassError
+%            {\@currname}
+%            {Felaktig dokumenttyp "\fstyrdok@doctype" angedd!}
+%            {Det måste vara en av de följande: "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "\@currname" genom att sätta "doctype=<sträng>".}
+%}
+%}
+%}
+%}
 
-\newcommand{\removefromunused}[1]{\@expandtwoargs\@removeelement{#1}{\@unusedoptionlist}{\@unusedoptionlist}}
-
-\ifdefstring{\fstyrdok@doctype}{stadgar}{ % STADGAR
-\toggletrue{isstadgar}
-\removefromunused{doctype=stadgar} %UGLY: Hard remove of "unused" option
-}
-{
-\ifdefstring{\fstyrdok@doctype}{pm}{ %PM
-\toggletrue{ispm}
-\removefromunused{doctype=pm} %UGLY: Hard remove of "unused" option
-}
-{
-\ifdefstring{\fstyrdok@doctype}{allapm}{ % ALLA PM
-\toggletrue{isallapm}
-\removefromunused{doctype=allapm} %UGLY: Hard remove of "unused" option
-}
-{
-\ifdefstring{\fstyrdok@doctype}{doc}{ % "VANLIGT" DOKUMENT
-\toggletrue{isdoc}
-\removefromunused{doctype=doc} %UGLY: Hard remove of "unused" option
-}
-{ % INGET AV DET = FEL
-\ClassError
-            {\@currname}
-            {Felaktig dokumenttyp "\fstyrdok@doctype" angedd!}
-            {Det måste vara en av de följande: "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "\@currname" genom att sätta "doctype=<sträng>".}
-}
-}
-}
-}
-
+%Kolla att bara en document type är använd
+%samt sätt "doc" som default om det inte är någon given
+\ifnumcomp{\value{nrofDocTypes}}{=}{0}
+{\toggletrue{isdoc}}
+{}
+\ifnumcomp{\value{nrofDocTypes}}{>}{1}
+{\ClassError{\@currname}{Du har engivit mer än 1 dokument typ!}}
+{}
 
 %Ger ett Class Error om man skickar in ett option som inte används (antagligen fel)
 \foreach \x in \@unusedoptionlist {
