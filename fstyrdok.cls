@@ -9,6 +9,9 @@
 % ifthen är obsolete och ska fasas ut till förmån för etoolbox
 \RequirePackage{ifthen}
 \RequirePackage{etoolbox}
+%pgffor: Gör det möjligt att loopa över commandon i listor med \foreach
+\RequirePackage{pgffor}
+
 
 
 
@@ -18,14 +21,14 @@
 %  INTRODUCERA VARIABLER   %
 % ======================== %
 % Switch på vilken doc-typ det är. Default är "vanlig"
-%\newtoggle{isstadgar}
-%\togglefalse{isstadgar}
-%\newtoggle{ispm}
-%\togglefalse{ispm}
-%\newtoggle{isallapm}
-%\togglefalse{isallapm}
-%\newtoggle{isdoc}
-%\toggletrue{isdoc}
+\newtoggle{isstadgar}
+\togglefalse{isstadgar}
+\newtoggle{ispm}
+\togglefalse{ispm}
+\newtoggle{isallapm}
+\togglefalse{isallapm}
+\newtoggle{isdoc}
+\toggletrue{isdoc}
 
 \newtoggle{IsLscape}
 \togglefalse{IsLscape} %Har portrait som default
@@ -88,15 +91,61 @@
 
 
 % Processa alla options
-\ProcessKeyvalOptions{fstyrdok}
+\ProcessKeyvalOptions{\@currname}
 
 
 %Ger ett package error om man skickar in fel option
-%\DeclareOption*{%
-%\PackageError{fstil}{The specified option `\CurrentOption' is not supported! \\ Kolla om du stavat fel eller titta i Guiden fstil.pdf om vilka options som fungerar.}%
-%}
-
+%Tar också hand om onödiga varningar av typen "doctype" som "Unused Global Option".
+\makeatletter
+\DeclareOption*{%
+\foreach \x in \@unusedoptionlist {
+\ClassError{\@currname}{The specified option `\x' is not supported! Kolla om du stavat fel eller titta i Guiden vilka options som fungerar.}%
+}
+}
+\makeatother
 \ProcessOptions
+
+
+% ======================== %
+%   Post-process options   %
+% ======================== %
+% Makron för snabb koll mot de olika dokumenttyperna
+\makeatletter
+\newcommand\isstadgar{\equal{0}{1}}
+\newcommand\ispm{\equal{0}{1}}
+\newcommand\isallapm{\equal{0}{1}}
+
+\ifdefstring{\fstyrdok@doctype}{stadgar}{
+\renewcommand\isstadgar{\equal{1}{1}}
+\toggletrue{isstadgar}
+}
+{
+\ifdefstring{\fstyrdok@doctype}{pm}{
+\renewcommand\ispm{\equal{1}{1}}
+\toggletrue{ispm}
+}
+{
+\ifdefstring{\fstyrdok@doctype}{allapm}{
+\renewcommand\isallapm{\equal{1}{1}}
+\toggletrue{isallapm}
+}
+{
+\ifdefstring{\fstyrdok@doctype}{doc}{
+\toggletrue{isdoc}
+}
+{
+\ClassError
+            {\@currname}
+            {Felaktig dokumenttyp "\fstyrdok@doctype" angedd!}
+            {Det måste vara en av de följande: "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "\@currname" genom att sätta "doctype=<sträng>".}
+}
+}
+}
+}
+\makeatother
+%\newcommand\isstadgar{\equal{\doctype}{stadgar}}
+%\newcommand\ispm{\equal{\doctype}{pm}}
+%\newcommand\isallapm{\equal{\doctype}{allapm}}
 
 
 %-----------------------------------------------------------%
@@ -182,37 +231,7 @@
 %    }
 %}
 
-% ======================== %
-%      INTRODUCERA VARIABLER            %
-% ======================== %
-% Makron för snabb koll mot de olika dokumenttyperna
-\makeatletter
-\newcommand\isstadgar{\equal{0}{1}}
-\newcommand\ispm{\equal{0}{1}}
-\newcommand\isallapm{\equal{0}{1}}
-\ifdefstring{\fstyrdok@doctype}{stadgar}{
-\renewcommand\isstadgar{\equal{1}{1}}
-}
-{
-\ifdefstring{\fstyrdok@doctype}{pm}{
-\renewcommand\ispm{\equal{1}{1}}
-}
-{
-\ifdefstring{\fstyrdok@doctype}{allapm}{
-\renewcommand\isallapm{\equal{1}{1}}
-}
-{
-\ClassError
-            {fstyrdok}
-            {Felaktig dokumenttyp angedd!}
-            {Om du anger dokumenttyp så måste det vara en av de följande: "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "fstyrdok" genom att sätta "doctype=<sträng>".}
-}
-}
-}
-\makeatother
-%\newcommand\isstadgar{\equal{\doctype}{stadgar}}
-%\newcommand\ispm{\equal{\doctype}{pm}}
-%\newcommand\isallapm{\equal{\doctype}{allapm}}
+
 
 
 %========================%
@@ -468,7 +487,7 @@ Datum & Sammanträde & Avsnitt\\
 \newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\tableofcontents}
 
 % Enkelt kommando för titelblad och innehållsförteckning
-\ifthenelse{\isstadgar\OR\isallapm}
+\ifboolexpr{togl {isstadgar} or togl {isallapm}}
 { % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
     \newcommand\ftitlepage
     {
@@ -476,7 +495,8 @@ Datum & Sammanträde & Avsnitt\\
         \maketitle
         \newpage\frontmatter
         % Visa bara ändringshistoriken först för stadgar
-        \ifthenelse{\isstadgar}{\showhistory}{}
+        \ifthenelse{\isstadgar}
+        \ifboolexpr{togl {isstadgar}}{\showhistory}{}
         \ftoc
         \end{titlepage}
         \newpage\mainmatter
