@@ -103,39 +103,6 @@
 % ======================== %
 %   Post-process options   %
 % ======================== %
-% Makron för snabb koll mot de olika dokumenttyperna
-%\makeatletter
-%
-%\newcommand{\removefromunused}[1]{\@expandtwoargs\@removeelement{#1}{\@unusedoptionlist}{\@unusedoptionlist}}
-%
-%\ifdefstring{\fstyrdok@doctype}{stadgar}{ % STADGAR
-%\toggletrue{isstadgar}
-%\removefromunused{doctype=stadgar} %UGLY: Hard remove of "unused" option
-%}
-%{
-%\ifdefstring{\fstyrdok@doctype}{pm}{ %PM
-%\toggletrue{ispm}
-%\removefromunused{doctype=pm} %UGLY: Hard remove of "unused" option
-%}
-%{
-%\ifdefstring{\fstyrdok@doctype}{allapm}{ % ALLA PM
-%\toggletrue{isallapm}
-%\removefromunused{doctype=allapm} %UGLY: Hard remove of "unused" option
-%}
-%{
-%\ifdefstring{\fstyrdok@doctype}{doc}{ % "VANLIGT" DOKUMENT
-%\toggletrue{isdoc}
-%\removefromunused{doctype=doc} %UGLY: Hard remove of "unused" option
-%}
-%{ % INGET AV DET = FEL
-%\ClassError
-%            {\@currname}
-%            {Felaktig dokumenttyp "\fstyrdok@doctype" angedd!}
-%            {Det måste vara en av de följande: "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "\@currname" genom att sätta "doctype=<sträng>".}
-%}
-%}
-%}
-%}
 
 %Kolla att bara en document type är använd
 %samt sätt "doc" som default om det inte är någon given
@@ -302,7 +269,9 @@ Datum & Sammanträde & Avsnitt\\
 
 % Kommando för innehållsförteckning med bokmärke i PDF-filen
 %Definierar \ftoc	(fixar färgen också, vill inte ha den grå som andra länkar!)
-\newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\hypersetup{linkcolor=Black}\tableofcontents\hypersetup{linkcolor=headernfooter}\newpage}
+\newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}
+\hypersetup{linkcolor=Black}\tableofcontents
+\hypersetup{linkcolor=headernfooter}\newpage}
 
 
 
@@ -318,7 +287,7 @@ Datum & Sammanträde & Avsnitt\\
 \newcommand\mainmatter{
     % Sidnummer i arabiska siffror
     \pagenumbering{arabic}
-    \pagestyle{fancy}
+    \pagestyle{fstil_page}
 }
 
 
@@ -422,25 +391,12 @@ Datum & Sammanträde & Avsnitt\\
 
 
 
-%Definierar om \maketitle. Lite stand-alone...
-\makeatletter
-\renewcommand\maketitle{
-\begin{center}
-\headingfont\huge\selectfont\bfseries\MakeTextUppercase\@title\end{center}
-\vspace{4em}
-\hypersetup{pdftitle={\@title}, pdfauthor={\@author}}
-}
-\makeatother
-
-
-
 %========================================%
 %  INSTÄLLNINGAR FÖR SIDHUVUD OCH SIDFOT %
 %========================================%
 
 \definecolor{headernfooter}{gray}{0.40} %Definierar en gråfärg som är 40% svart,  används i header och footer
 
-\pagenumbering{arabic} % Arabiska siffror i sidnumreringen
 \setlength\headheight{70pt} % Default är 12 pt, men detta passar bra till loggan
 \newlength\logowidth
 \newlength\logoheight
@@ -459,19 +415,27 @@ Datum & Sammanträde & Avsnitt\\
  \setlength\logowidth{.55\headheight}
  \setlength\logoheight{\headheight}
 }
+
+
+\newcommand\logoname{{F_head_logo_noshadow}}
+
+
+\makeatletter
+\fancypagestyle{fstil_page}{%DEFINE A NEW PAGE STYLE
+  \pagenumbering{arabic} % Arabiska siffror i sidnumreringen
+  \fancyhf{}
+  
+
 \renewcommand\headrulewidth{0pt}
 
 \setlength\headsep{.5\logowidth}
 
 \fancyheadoffset[R]{.7\logowidth}
 
-\newcommand\logoname{{F_head_logo_noshadow}}
+\fancyhead[R]{\raisebox{-0.5\height}{\includegraphics[height=\logoheight]{\logoname}}\hspace{\logoxoffset}}
 
 
-\rhead{\raisebox{-0.5\height}{\includegraphics[height=\logoheight]{\logoname}}\hspace{\logoxoffset}}
-
-\makeatletter
-\lhead{%
+\fancyhead[L]{%
 \iftoggle{HeadIsFancy}{%
 \textcolor{headernfooter}{%
 \headingfont\textbf{\@title}\\
@@ -481,10 +445,11 @@ Datum & Sammanträde & Avsnitt\\
 Sid. \thepage~ av { \pageref{LastPage}} }
 }{}
 }
-\makeatother
 
-\chead{}
-\cfoot{
+
+\fancyhead[C]{}
+
+\fancyfoot[C]{
 \iftoggle{HeadIsFancy}{%
 \rule{\textwidth}{0.75pt}
 \textcolor{headernfooter}{
@@ -498,10 +463,11 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
 }
 }{}
 }
+\makeatother
 
-\lfoot{}
-\lfoot{}
-\pagestyle{fancy}
+\fancyfoot[L]{}
+\fancyfoot[R]{}
+}% END fstil_page
 
 
 
@@ -736,3 +702,10 @@ Fyll i de fem rubrikerna ovan $\&$ fäst kvittot/fakturan synligt på baksidan.}
         \multicolumn{4}{|r|}{\raisebox{-1pt}{TOTALT}} & \vspace{.6\baselineskip} & \\
     \hline
   \end{tabular}}
+
+
+
+%====================================%
+%  SE TILL ATT MAINMATTER ÄR AKTIV   %
+%====================================%
+\mainmatter
