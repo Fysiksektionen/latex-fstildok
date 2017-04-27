@@ -66,7 +66,11 @@
 \DeclareOption{NoFontChange}{\togglefalse{ChangeTheFont}}
 
 %Gör det möjligt att få till 'landscape'
-\DeclareOption{landscape}{\toggletrue{IsLscape}}
+\DeclareOption{landscape}{
+\toggletrue{IsLscape}
+\PassOptionsToClass{\CurrentOption}{article}
+\PassOptionsToPackage{\CurrentOption}{geomerty}
+}
 
 
 % Processa alla options
