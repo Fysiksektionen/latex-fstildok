@@ -2,6 +2,12 @@
 \ProvidesClass{fstyrdok}
 \renewcommand\@currname{fstyrdok}
 
+
+
+%====================================%
+%   FÖRSTA OMGÅNG PAKET SOM BEHÖVS   %
+%      FÖR OPTION PROCESSING ETC     %
+%====================================%
 %kvoption: För att kunna ta emot options på formatet key=value
 \RequirePackage{kvoptions}
 %\SetupKeyvalOptions{family=fstyrdok,prefix=}
@@ -14,11 +20,11 @@
 
 
 
-
 % ======================== %
 %  INTRODUCERA VARIABLER   %
 % ======================== %
-% Switch på vilken doc-typ det är. Default är "vanlig"
+% Switch på vilken doc-typ det är.
+% Default är "vanlig" (isdoc) men alla ska vara false här!
 \newtoggle{isstadgar}
 \togglefalse{isstadgar}
 \newtoggle{ispm}
@@ -43,9 +49,9 @@
 \newtoggle{ChangeTheFont}
 \toggletrue{ChangeTheFont} %Per standard använder man den font som ingår, kan man inte installera den kan detta vara bra att använda
 
-%-----------------------------------------------------------%
-%           OPTIONS FÖR KLASSEN FSEKT-STYRDOK               %
-%-----------------------------------------------------------%
+%=====================================%
+%  OPTIONS FÖR KLASSEN FSEKT-STYRDOK  %
+%=====================================%
 % Options till babel
 % Defaultvärden är satta för att passa för dokument på svenska i skolans IT-miljö.
 \DeclareStringOption[swedish]{language}
@@ -124,11 +130,11 @@
 
 
 
-%-----------------------------------------------------------%
-%           PAKET SOM BEHÖVS FÖR ATT RESTEN         %
-%           AV KLASSEN SKA FUNGERA              %
-%           (eller som bara är grymma...)           %
-%-----------------------------------------------------------%
+%=====================================%
+%   PAKET SOM BEHÖVS FÖR ATT RESTEN   %
+%    AV KLASSEN SKA FUNGERA           %
+%    (eller som bara är grymma...)    %
+%=====================================%
 \LoadClass[10pt,a4paper]{article}
 
 \makeatletter
@@ -180,9 +186,10 @@
 \RequirePackage[bookmarks=true,colorlinks=true,linkcolor=headernfooter,urlcolor=headernfooter,linktoc=section]{hyperref}
 
 
-%========================%
-%    INSTÄLLNINGAR FÖR FONTER       %
-%========================%
+
+%==============================%
+%    INSTÄLLNINGAR FÖR FONTER  %
+%==============================%
 % Välj rätt typsnitt till brödtext och rubriker.
 \defaultfontfeatures{Ligatures=TeX}
 \iftoggle{ChangeTheFont}{%Om man ska ändra fonten, gör det!
@@ -196,31 +203,17 @@
 
 % Ställ typsnitt och spacing för rubriker
 \titleformat*{\section}{\headingfont\fontsize{16}{18}\selectfont\bfseries}
-%\titlespacing{\section}{0pt}{*2}{-5pt}
 \titleformat*{\subsection}{\headingfont\fontsize{14}{16}\selectfont}
-
-%\titlespacing{\subsection}{-4pt}{*0}{*1}
 
 \titleformat*{\subsubsection}{\headingfont\itshape}
 \titlespacing{\subsubsection}{0pt}{*2}{-5pt}
 
 
 
-
-
-%-----------------------------------------------------------%
-%           FÄLTDEFINITIONER OCH ANNAT          %
-%           FÖR TITELSIDA, INNEHÅLSFÖRTECKNING      %
-%           OCH ÄNDRINGSHSTORIK             %
-%-----------------------------------------------------------%
+% ======================== %
+%      ÄNDRINGSHSTORIK     %
+% ======================== %
 \makeatletter
-
-% Sidavdelare
-\newcommand\HRule[1][1pt]{\rule{\linewidth}{#1}}
-
-% \org{<organisation>}
-\newcommand{\org}[1]{\def\@org{#1}}
-\@ifundefined{@org}{\org{Fysiksektionen, THS}}{}
 
 % Lista över ändringar
 \newcommand\changed[3]{#1 & #2 & #3\\}
@@ -234,23 +227,30 @@ Datum & Sammanträde & Avsnitt\\
 \end{tabular}
 }
 }
+\makeatother
 
-%% Ny definiton av titel
-%\renewcommand\maketitle{
-%%    \hypersetup{pdftitle={\@title},pdfauthor={\@author}}
-%    \begin{flushright}
-%    \includegraphics[width=3cm]{kugghjul}
-%    \vskip 2cm
-%    {\LARGE \textsc{\@title} \\ \HRule}
-%        {\large \@org}
-%    {\small\par Uppdaterat \@date}
-%  \end{flushright}
-%}
+
+\makeatletter
+% Ändringshistorik
+\ifboolexpr{togl {ispm} or togl {isstadgar}}
+{
+    \newcommand\showhistory{
+    \section*{Ändringshistorik}
+    \@history
+    }
+}
+{
+    \newcommand\showhistory{
+    \subsection*{Ändringshistorik}
+    \@history
+    }
+}
+\makeatother
 
 
 
 % ======================== %
-%     INSTÄLLNINGAR FÖR TOC                   %
+%  INSTÄLLNINGAR FÖR TOC   %
 % ======================== %
 \ifboolexpr{togl {isdoc}}{ %VANLIGT DOKUMENT
 %Formatering av section
@@ -281,8 +281,9 @@ Datum & Sammanträde & Avsnitt\\
 \newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\hypersetup{linkcolor=Black}\tableofcontents\hypersetup{linkcolor=headernfooter}\newpage}
 
 
+
 % ======================== %
-%    		 TITELSIDA  		                %
+%        TITELSIDA         %
 % ======================== %
 % Sätt egenskaper av PDF "rätt"
 \newcommand\frontmatter{
@@ -296,13 +297,15 @@ Datum & Sammanträde & Avsnitt\\
     \pagestyle{fancy}
 }
 
+
 %%%Definierar \ftitlepage
+\makeatletter
 \newcommand\ftitlepage{
 \hypersetup{pdftitle={\@title}, pdfauthor={\@author}}
 \thispagestyle{empty}
 \pagecolor{fysik}
 \iftoggle{IsLscape}
-{% Om sant, förbered för Lscape
+{% ÄR LANDSCAPE
 \hspace{-3in}{\makebox[\paperheight][r]{\raisebox{0pt}[10cm]{
 \includegraphics[width=1.5\textheight]{kugghjul}
 }}}
@@ -313,24 +316,22 @@ Datum & Sammanträde & Avsnitt\\
 \colorbox{white}{\makebox[\paperwidth][c]{\raisebox{0pt}[0cm][\paperheight]{
 \begin{minipage}[0]{\textwidth}
 \vspace{1.9in}
-\makeatletter
 \iftoggle{DateTitle}
-{% Om sant, högerjustera och sätt datumet på framsidan
+{% ÄR DATE ON TITLE
 \begin{flushright}
 {
 \headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm} \ifdefstring{\@date}{}{}{\@date\par\vspace{0.5cm}}
 }
 \end{flushright}
-} {% Om det inte är sant, gör som vanligt
+} {% INTE DATE ON TITLE
 {\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}}
 }
 { \headingfont\fontsize{12}{14} \@styrdokdate\@fintro }
-\makeatother
 \end{minipage}
 }}}
 }}
-} %Lscape versionen end
-{ %Om det inte är Lscape ska det vara Portrait versionen
+} %LANDSCAPE END
+{ %ÄR PORTRAIT
 \hspace{-\oddsidemargin}\hspace{-1in}{\makebox[\paperwidth][r]{\raisebox{0pt}[14cm]{
 \includegraphics[width=2\textwidth]{kugghjul}
 }}}
@@ -341,24 +342,23 @@ Datum & Sammanträde & Avsnitt\\
 \colorbox{white}{\makebox[\paperwidth][c]{\raisebox{0pt}[0cm][\paperheight]{
 \begin{minipage}[0]{\textwidth}
 \vspace{3in}
-\makeatletter
+
 \iftoggle{DateTitle}
-{% Om sant, högerjustera och sätt datumet på framsidan
+{% ÄR DATE ON TITLE
 \begin{flushright}
 {
 \headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}  \ifdefstring{\@date}{}{}{\@date \par\vspace{0.5cm}}
 }
 \end{flushright}
-} {% Om det inte är sant, gör som vanligt
+} {% INTE DATE ON TITLE
 {\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}}
 }
-\makeatother
 { \headingfont\fontsize{12}{14} \@styrdokdate\@fintro }
 \end{minipage}
 }}}
 
 }}
-} %Portrait versionen end
+} %PORTRAIT END
 \newpage
 \pagecolor{White}
 \ifboolexpr{togl {isstadgar} or togl {isallapm}}{ % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
@@ -373,7 +373,9 @@ Datum & Sammanträde & Avsnitt\\
             %\thispagestyle{empty}
 }{}
 }
-} %%%ftitlepage end
+}
+\makeatother
+%%%ftitlepage end
 
 %Definierar \fintro{<Introduktionstext på förstasidan>}
 %Ger ett blankslag om ej definierat i dokumentet
@@ -387,7 +389,7 @@ Datum & Sammanträde & Avsnitt\\
 \makeatletter
 \ifboolexpr{togl {isstadgar} or togl {isallapm} or togl {ispm}}
 {
-\def\@styrdokdate{\@org \par Uppdaterat \@date\par}
+\def\@styrdokdate{Fysiksektionen, THS \par Uppdaterat \@date\par}
 }
 {
 \def\@styrdokdate{}
@@ -407,54 +409,10 @@ Datum & Sammanträde & Avsnitt\\
 \makeatother
 
 
-%% Enkelt kommando för titelblad och innehållsförteckning
-%\ifboolexpr{togl {isstadgar} or togl {isallapm}}
-%{ % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
-%    \newcommand\ftitlepage
-%    {
-%        \begin{titlepage}
-%        \maketitle
-%        \newpage\frontmatter
-%        % Visa bara ändringshistoriken först för stadgar
-%        \ifboolexpr{togl {isstadgar}}{\showhistory}{}
-%        \ftoc
-%        \end{titlepage}
-%        \mainmatter
-%    }
-%}
-%{ % Bara ett PM (Titelsida med ändringshistorik)
-%    \newcommand\ftitlepage
-%    {
-%        \begin{titlepage}
-%            \maketitle
-%            \showhistory
-%            \thispagestyle{empty}
-%        \end{titlepage}
-%    }
-%}
 
-\makeatletter
-% Ändringshistorik
-\ifboolexpr{togl {ispm} or togl {isstadgar}}
-{
-    \newcommand\showhistory{
-    \section*{Ändringshistorik}
-    \@history
-    }
-}
-{
-    \newcommand\showhistory{
-    \subsection*{Ändringshistorik}
-    \@history
-    }
-}
-\makeatother
-
-
-
-%===============================%
-%    INSTÄLLNINGAR FÖR SIDHUVUD OCH SIDFOT     %
-%===============================%
+%========================================%
+%  INSTÄLLNINGAR FÖR SIDHUVUD OCH SIDFOT %
+%========================================%
 
 \definecolor{headernfooter}{gray}{0.40} %Definierar en gråfärg som är 40% svart,  används i header och footer
 
@@ -479,12 +437,13 @@ Datum & Sammanträde & Avsnitt\\
 }
 \renewcommand\headrulewidth{0pt}
 
-
 \setlength\headsep{.5\logowidth}
 
 \fancyheadoffset[R]{.7\logowidth}
 
 \newcommand\logoname{{F_head_logo_noshadow}}
+
+
 \rhead{\raisebox{-0.5\height}{\includegraphics[height=\logoheight]{\logoname}}\hspace{\logoxoffset}}
 
 \makeatletter
@@ -522,9 +481,9 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
 
 
 
-%-----------------------------------------------------------%
-%           LISTMILJÖER FÖR PARAGRAFER          %
-%-----------------------------------------------------------%
+%=======================================%
+%      LISTMILJÖER FÖR PARAGRAFER       %
+%=======================================%
 \newenvironment{punkter}{\begin{enumerate}}{\end{enumerate}}
 \newcommand\punkt{\normalfont\item}
 \newcommand\fetpunkt{\normalfont\item\bfseries}
@@ -541,6 +500,7 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
 \setlength\cftsecnumwidth{2.2em}
 \setlength\cftsubsecnumwidth{4em}
 
+
 \ifboolexpr{togl {ispm} or togl {isstadgar}} % STADGAR ELLER PM
 {
     \renewcommand\thesection{\arabic{section}~\S~}
@@ -556,6 +516,7 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
         \setupenumerate{1}{\thesection}{\arabic{subsection}.\arabic*.}
     }
 }{}
+
 
 \ifboolexpr{togl {isallapm}} % ALLA PM
 {
@@ -583,8 +544,7 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
         \showhistory
     }
 }
-{
-}
+{}
 
 \setenumerate[2]{label*=\arabic*.}
 \setenumerate[3]{label*=\arabic*.}
@@ -592,9 +552,9 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
 
 
 
-%==========================%
+%=====================================%
 %   SEKTIONSRELATERADE KOMMANDON      %
-%==========================%
+%=====================================%
 %Definiera färgen "fysik", enligt stadgarnas CMYK-definition.
 \definecolor{fysik}{cmyk}{0.000, 0.608, 0.831, 0.000}
 %Definiera färgen "orange", enligt stadgarnas definition
