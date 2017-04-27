@@ -185,9 +185,12 @@
 \defaultfontfeatures{Ligatures=TeX}
 \iftoggle{ChangeTheFont}{%Om man ska ändra fonten, gör det!
 \setmainfont{Garamond-Normal}
-\newfontfamily\headingfont{Century Gothic}}
+\newfontfamily\headingfont{Century Gothic}
+}
 {%Om man inte ska ändra fonten, definiera i alla fall upp \headingfont
-\newfontfamily\headingfont{Latin Modern Roman}}
+\newfontfamily\headingfont{Latin Modern Roman}
+}
+
 
 % Ställ typsnitt och spacing för rubriker
 \titleformat*{\section}{\headingfont\fontsize{16}{18}\selectfont\bfseries}
@@ -254,7 +257,8 @@ Datum & Sammanträde & Avsnitt\\
 }
 
 % Kommando för innehållsförteckning med bokmärke i PDF-filen
-\newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\tableofcontents}
+%Definierar \ftoc	(fixar färgen också, vill inte ha den grå som andra länkar!)
+\newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\hypersetup{linkcolor=Black}\tableofcontents\hypersetup{linkcolor=headernfooter}\newpage}
 
 % Enkelt kommando för titelblad och innehållsförteckning
 \ifboolexpr{togl {isstadgar} or togl {isallapm}}
@@ -268,7 +272,7 @@ Datum & Sammanträde & Avsnitt\\
         \ifboolexpr{togl {isstadgar}}{\showhistory}{}
         \ftoc
         \end{titlepage}
-        \newpage\mainmatter
+        \mainmatter
     }
 }
 { % Bara ett PM (Titelsida med ändringshistorik)
