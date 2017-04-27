@@ -1,7 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{fstyrdok}
 \renewcommand\@currname{fstyrdok}
-\LoadClass[10pt,a4paper]{article}
 
 % Paket för att kunna ta emot options på formatet key=value
 \RequirePackage{kvoptions}
@@ -51,24 +50,26 @@
 \DeclareStringOption[swedish]{language}
 
 % Genvägar för att tillåta olika dokumenttyper
-\newcounter{doctypes}
-\newcommand\doctype{none}
-\newcommand\allowdoctype[1]
-{
-    \DeclareVoidOption{#1}{
-        \stepcounter{doctypes}
-        \renewcommand\doctype{#1}
-        \ClassInfo{Setting the document type to #1}
-    }
-}
+%\newcounter{doctypes}
+%\newcommand\doctype{none}
+%\newcommand\allowdoctype[1]
+%{
+%    \DeclareVoidOption{#1}{
+%        \stepcounter{doctypes}
+%        \renewcommand\doctype{#1}
+%        \ClassInfo{Setting the document type to #1}
+%    }
+%}
 
 % Options som visar vilken dokumenttyp som ska användas.
 % Exakt en av dessa måste anges.
 % Om en doctype läggs till i listan, behöver även makrona i 
 % "MAKRON FÖR FÖRENKLING AV SWITCH PÅ DOCTYPE..." uppdateras
-\allowdoctype{stadgar}
-\allowdoctype{allapm}
-\allowdoctype{pm}
+%\allowdoctype{stadgar}
+%\allowdoctype{allapm}
+%\allowdoctype{pm}
+\DeclareStringOption[doc]{doctype}[doc]
+
 
 %Tar med det angivna datumet på titelsidan och högerjusterar allt
 \DeclareOption{DateOnTitle}{\toggletrue{DateTitle}}
@@ -77,26 +78,25 @@
 \DeclareOption{BigLogo}{\toggletrue{BigLogo}}
 
 %Ger möjlighet till en mer avskalad sidmall, med mindre info i sidhuvud och sidfot
-\DeclareOption{plain}{%
-\togglefalse{HeadIsFancy}%
-}
+\DeclareOption{plain}{\togglefalse{HeadIsFancy}}
 
 %Om man inte vill att fstil ska använda Garamond för att man tex inte kan installera den (MAC har problem med det)
 \DeclareOption{NoFontChange}{\togglefalse{ChangeTheFont}}
 
-
+%Gör det möjligt att få till 'landscape'
+\DeclareOption{landscape}{\toggletrue{IsLscape}}
 
 
 % Processa alla options
 \ProcessKeyvalOptions{fstyrdok}
 
-\ProcessOptions
 
 %Ger ett package error om man skickar in fel option
 %\DeclareOption*{%
 %\PackageError{fstil}{The specified option `\CurrentOption' is not supported! \\ Kolla om du stavat fel eller titta i Guiden fstil.pdf om vilka options som fungerar.}%
 %}
 
+\ProcessOptions
 
 
 %-----------------------------------------------------------%
@@ -104,13 +104,14 @@
 %           AV KLASSEN SKA FUNGERA              %
 %           (eller som bara är grymma...)           %
 %-----------------------------------------------------------%
+\LoadClass[10pt,a4paper,landscape]{article}
+
 \makeatletter
 \typeout{\@currname}
 
 % babel: Avstavning, rubriker på innehållsförteckning m.m., språkanpassat
 \RequirePackage[\fstyrdok@language]{babel}
 \makeatother
-
 
 
 %fancyhdr: ger kontroll på sidhuvud och sidfot
@@ -164,30 +165,54 @@
 %           ANVÄNDS                     %
 %-----------------------------------------------------------%
 % Kolla att endast en doctype används
-\ifnumcomp{doctypes}{=}{1}
-{\typeout{Dokumenttyp: \doctype}}
-{
-    \ifthenelse{\arabic{doctypes}>1}
-    {   \ClassError
-            {fstydrok}
-            {För många dokumenttyper angedda!}
-            {Du måste ange exakt 1 dokumenttyp. Tillgängliga dokumenttyper är "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "fstyrdok".}
-    }
-    {
-        \ClassError
-            {fstyrdok}
-            {Ingen dokumenttyp angedd!}
-            {Du måste ange exakt 1 dokumenttyp. Tillgängliga dokumenttyper är "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "fstyrdok".}
-    }
-}
+%\ifnumcomp{doctypes}{=}{1}
+%{\typeout{Dokumenttyp: \doctype}}
+%{
+%    \ifthenelse{\arabic{doctypes}>1}
+%    {   \ClassError
+%            {fstydrok}
+%            {För många dokumenttyper angedda!}
+%            {Du måste ange exakt 1 dokumenttyp. Tillgängliga dokumenttyper är "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "fstyrdok".}
+%    }
+%    {
+%        \ClassError
+%            {fstyrdok}
+%            {Ingen dokumenttyp angedd!}
+%            {Du måste ange exakt 1 dokumenttyp. Tillgängliga dokumenttyper är "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "fstyrdok".}
+%    }
+%}
 
 % ======================== %
 %      INTRODUCERA VARIABLER            %
 % ======================== %
-% Makron för snabb koll mot de olika dokumenttyperna 
-\newcommand\isstadgar{\equal{\doctype}{stadgar}}
-\newcommand\ispm{\equal{\doctype}{pm}}
-\newcommand\isallapm{\equal{\doctype}{allapm}}
+% Makron för snabb koll mot de olika dokumenttyperna
+\makeatletter
+\newcommand\isstadgar{\equal{0}{1}}
+\newcommand\ispm{\equal{0}{1}}
+\newcommand\isallapm{\equal{0}{1}}
+\ifdefstring{\fstyrdok@doctype}{stadgar}{
+\renewcommand\isstadgar{\equal{1}{1}}
+}
+{
+\ifdefstring{\fstyrdok@doctype}{pm}{
+\renewcommand\ispm{\equal{1}{1}}
+}
+{
+\ifdefstring{\fstyrdok@doctype}{allapm}{
+\renewcommand\isallapm{\equal{1}{1}}
+}
+{
+\ClassError
+            {fstyrdok}
+            {Felaktig dokumenttyp angedd!}
+            {Om du anger dokumenttyp så måste det vara en av de följande: "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "fstyrdok" genom att sätta "doctype=<sträng>".}
+}
+}
+}
+\makeatother
+%\newcommand\isstadgar{\equal{\doctype}{stadgar}}
+%\newcommand\ispm{\equal{\doctype}{pm}}
+%\newcommand\isallapm{\equal{\doctype}{allapm}}
 
 
 %========================%
