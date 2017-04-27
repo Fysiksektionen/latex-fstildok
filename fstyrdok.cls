@@ -6,13 +6,48 @@
 % Paket för att kunna ta emot options på formatet key=value
 \RequirePackage{kvoptions}
 %\SetupKeyvalOptions{family=fstyrdok,prefix=}
+%ifthen/etoolbox: för logisk programering med booleans
+% ifthen är obsolete och ska fasas ut till förmån för etoolbox
+\RequirePackage{ifthen}
+\RequirePackage{etoolbox}
+
+
+
+
+
+% ======================== %
+%  INTRODUCERA VARIABLER   %
+% ======================== %
+% Switch på vilken doc-typ det är. Default är "vanlig"
+%\newtoggle{isstadgar}
+%\togglefalse{isstadgar}
+%\newtoggle{ispm}
+%\togglefalse{ispm}
+%\newtoggle{isallapm}
+%\togglefalse{isallapm}
+%\newtoggle{isdoc}
+%\toggletrue{isdoc}
+
+\newtoggle{IsLscape}
+\togglefalse{IsLscape} %Har portrait som default
+
+\newtoggle{DateTitle}
+\togglefalse{DateTitle} %Per standard har man inte med datumet i tideln
+
+\newtoggle{BigLogo}
+\togglefalse{BigLogo} % Loggan är liten som default
+
+\newtoggle{HeadIsFancy}
+\toggletrue{HeadIsFancy} % Mycket info i siduvud/sidfot som default
+
+\newtoggle{ChangeTheFont}
+\toggletrue{ChangeTheFont} %Per standard använder man den font som ingår, kan man inte installera den kan detta vara bra att använda
 
 %-----------------------------------------------------------%
-%           OPTIONS FÖR KLASSEN FSEKT-STYRDOK       %
+%           OPTIONS FÖR KLASSEN FSEKT-STYRDOK               %
 %-----------------------------------------------------------%
-% Options till inputenc och babel
+% Options till babel
 % Defaultvärden är satta för att passa för dokument på svenska i skolans IT-miljö.
-\DeclareStringOption[latin1]{inputenc}
 \DeclareStringOption[swedish]{language}
 
 % Genvägar för att tillåta olika dokumenttyper
@@ -35,8 +70,34 @@
 \allowdoctype{allapm}
 \allowdoctype{pm}
 
+%Tar med det angivna datumet på titelsidan och högerjusterar allt
+\DeclareOption{DateOnTitle}{\toggletrue{DateTitle}}
+
+% Gör loggan uppe i högra hörnet större
+\DeclareOption{BigLogo}{\toggletrue{BigLogo}}
+
+%Ger möjlighet till en mer avskalad sidmall, med mindre info i sidhuvud och sidfot
+\DeclareOption{plain}{%
+\togglefalse{HeadIsFancy}%
+}
+
+%Om man inte vill att fstil ska använda Garamond för att man tex inte kan installera den (MAC har problem med det)
+\DeclareOption{NoFontChange}{\togglefalse{ChangeTheFont}}
+
+
+
+
 % Processa alla options
 \ProcessKeyvalOptions{fstyrdok}
+
+\ProcessOptions
+
+%Ger ett package error om man skickar in fel option
+%\DeclareOption*{%
+%\PackageError{fstil}{The specified option `\CurrentOption' is not supported! \\ Kolla om du stavat fel eller titta i Guiden fstil.pdf om vilka options som fungerar.}%
+%}
+
+
 
 %-----------------------------------------------------------%
 %           PAKET SOM BEHÖVS FÖR ATT RESTEN         %
@@ -46,17 +107,12 @@
 \makeatletter
 \typeout{\@currname}
 
-% inputenc: Gör det möjligt att använda specialtecken som å, ä och ö.
-% \RequirePackage[\fstyrdok@inputenc]{inputenc}
 % babel: Avstavning, rubriker på innehållsförteckning m.m., språkanpassat
 \RequirePackage[\fstyrdok@language]{babel}
 \makeatother
 
 
-%ifthen/etoolbox: för logisk programering med booleans
-% ifthen är obsolete och ska fasas ut till förmån för etoolbox
-\RequirePackage{ifthen}
-\RequirePackage{etoolbox}
+
 %fancyhdr: ger kontroll på sidhuvud och sidfot
 \RequirePackage{fancyhdr}
 %lastpage: för att kunna referera till sista sidan
@@ -108,7 +164,7 @@
 %           ANVÄNDS                     %
 %-----------------------------------------------------------%
 % Kolla att endast en doctype används
-\ifthenelse{\equal{\arabic{doctypes}}{1}}
+\ifnumcomp{doctypes}{=}{1}
 {\typeout{Dokumenttyp: \doctype}}
 {
     \ifthenelse{\arabic{doctypes}>1}
@@ -133,20 +189,6 @@
 \newcommand\ispm{\equal{\doctype}{pm}}
 \newcommand\isallapm{\equal{\doctype}{allapm}}
 
-\newtoggle{IsLscape}
-\togglefalse{IsLscape} %Har portrait som default
-
-\newtoggle{DateTitle}
-\togglefalse{DateTitle} %Per standard har man inte med datumet i tideln
-
-\newtoggle{BigLogo}
-\togglefalse{BigLogo} % Loggan är liten som default
-
-\newtoggle{HeadIsFancy}
-\toggletrue{HeadIsFancy} % Mycket info i siduvud/sidfot som default
-
-\newtoggle{ChangeTheFont}
-\toggletrue{ChangeTheFont} %Per standard använder man den font som ingår, kan man inte installera den kan detta vara bra att använda
 
 %========================%
 %    INSTÄLLNINGAR FÖR FONTER       %
