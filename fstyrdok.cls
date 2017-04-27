@@ -84,24 +84,26 @@
 % Makron för snabb koll mot de olika dokumenttyperna
 \makeatletter
 
+\newcommand{\removefromunused}[1]{\@expandtwoargs\@removeelement{#1}{\@unusedoptionlist}{\@unusedoptionlist}}
+
 \ifdefstring{\fstyrdok@doctype}{stadgar}{ % STADGAR
 \toggletrue{isstadgar}
-\@expandtwoargs\@removeelement{doctype=stadgar}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
+\removefromunused{doctype=stadgar} %UGLY: Hard remove of "unused" option
 }
 {
 \ifdefstring{\fstyrdok@doctype}{pm}{ %PM
 \toggletrue{ispm}
-\@expandtwoargs\@removeelement{doctype=pm}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
+\removefromunused{doctype=pm} %UGLY: Hard remove of "unused" option
 }
 {
 \ifdefstring{\fstyrdok@doctype}{allapm}{ % ALLA PM
 \toggletrue{isallapm}
-\@expandtwoargs\@removeelement{doctype=allapm}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
+\removefromunused{doctype=allapm} %UGLY: Hard remove of "unused" option
 }
 {
 \ifdefstring{\fstyrdok@doctype}{doc}{ % "VANLIGT" DOKUMENT
 \toggletrue{isdoc}
-\@expandtwoargs\@removeelement{doctype=doc}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
+\removefromunused{doctype=doc} %UGLY: Hard remove of "unused" option
 }
 { % INGET AV DET = FEL
 \ClassError
@@ -161,7 +163,7 @@
 %Gör att kommandot \NoCaseChange{} kan användas runt syntax, för att skydda den.
 \RequirePackage{textcase}
 %geometry: Anpassa sidmarginalerna för att använda ett helt A4
-\RequirePackage{geometry}
+\RequirePackage[a4paper]{geometry}
 %parskipp: Låt styckesbrytning markeras med blankrad istället för indrag
 \RequirePackage[parfill]{parskip}
 %calc: För att räkna! Typ \withof
@@ -233,17 +235,17 @@ Datum & Sammanträde & Avsnitt\\
 }
 }
 
-% Ny definiton av titel
-\renewcommand\maketitle{
-%    \hypersetup{pdftitle={\@title},pdfauthor={\@author}}
-    \begin{flushright}
-    \includegraphics[width=3cm]{kugghjul}
-    \vskip 2cm
-    {\LARGE \textsc{\@title} \\ \HRule}
-        {\large \@org}
-    {\small\par Uppdaterat \@date}
-  \end{flushright}
-}
+%% Ny definiton av titel
+%\renewcommand\maketitle{
+%%    \hypersetup{pdftitle={\@title},pdfauthor={\@author}}
+%    \begin{flushright}
+%    \includegraphics[width=3cm]{kugghjul}
+%    \vskip 2cm
+%    {\LARGE \textsc{\@title} \\ \HRule}
+%        {\large \@org}
+%    {\small\par Uppdaterat \@date}
+%  \end{flushright}
+%}
 
 
 
@@ -322,7 +324,7 @@ Datum & Sammanträde & Avsnitt\\
 } {% Om det inte är sant, gör som vanligt
 {\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}}
 }
-{ \headingfont\fontsize{12}{14} \@fintro }
+{ \headingfont\fontsize{12}{14} \@styrdokdate\@fintro }
 \makeatother
 \end{minipage}
 }}}
@@ -351,7 +353,7 @@ Datum & Sammanträde & Avsnitt\\
 {\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}}
 }
 \makeatother
-{ \headingfont\fontsize{12}{14} \@fintro }
+{ \headingfont\fontsize{12}{14} \@styrdokdate\@fintro }
 \end{minipage}
 }}}
 
@@ -366,11 +368,10 @@ Datum & Sammanträde & Avsnitt\\
 \ftoc
 \mainmatter
 }
-{ 
-\ifboolexpr{togl {ispm}}{% Bara ett PM (Titelsida med ändringshistorik)
+{\ifboolexpr{togl {ispm}}{% Bara ett PM (Titelsida med ändringshistorik)
             \showhistory
             %\thispagestyle{empty}
-    }{}
+}{}
 }
 } %%%ftitlepage end
 
@@ -381,14 +382,31 @@ Datum & Sammanträde & Avsnitt\\
 \@ifundefined{@fintro}{\fintro{ } }{}
 \makeatother
 
-%\makeatletter
-%\renewcommand\maketitle{
-%\begin{center}
-%\headingfont\huge\selectfont\bfseries\MakeTextUppercase\@title\end{center}
-%\vspace{4em}
-%}
-%\makeatother
-%
+
+%Definierar ett MARCO som sätter datumet på framsidan, automatiskt om det är styrdokument.
+\makeatletter
+\ifboolexpr{togl {isstadgar} or togl {isallapm} or togl {ispm}}
+{
+\def\@styrdokdate{\@org \par Uppdaterat \@date\par}
+}
+{
+\def\@styrdokdate{}
+}
+\makeatother
+
+
+
+%Definierar om \maketitle. Lite stand-alone...
+\makeatletter
+\renewcommand\maketitle{
+\begin{center}
+\headingfont\huge\selectfont\bfseries\MakeTextUppercase\@title\end{center}
+\vspace{4em}
+\hypersetup{pdftitle={\@title}, pdfauthor={\@author}}
+}
+\makeatother
+
+
 %% Enkelt kommando för titelblad och innehållsförteckning
 %\ifboolexpr{togl {isstadgar} or togl {isallapm}}
 %{ % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
@@ -430,7 +448,6 @@ Datum & Sammanträde & Avsnitt\\
     \@history
     }
 }
-
 \makeatother
 
 
