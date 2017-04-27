@@ -5,9 +5,8 @@
 % Paket för att kunna ta emot options på formatet key=value
 \RequirePackage{kvoptions}
 %\SetupKeyvalOptions{family=fstyrdok,prefix=}
-%ifthen/etoolbox: för logisk programering med booleans
-% ifthen är obsolete och ska fasas ut till förmån för etoolbox
-\RequirePackage{ifthen}
+\RequirePackage{keyval}
+%etoolbox: (bland annat) för logisk programering med booleans
 \RequirePackage{etoolbox}
 %pgffor: Gör det möjligt att loopa över commandon i listor med \foreach
 \RequirePackage{pgffor}
@@ -52,26 +51,7 @@
 % Defaultvärden är satta för att passa för dokument på svenska i skolans IT-miljö.
 \DeclareStringOption[swedish]{language}
 
-% Genvägar för att tillåta olika dokumenttyper
-%\newcounter{doctypes}
-%\newcommand\doctype{none}
-%\newcommand\allowdoctype[1]
-%{
-%    \DeclareVoidOption{#1}{
-%        \stepcounter{doctypes}
-%        \renewcommand\doctype{#1}
-%        \ClassInfo{Setting the document type to #1}
-%    }
-%}
-
-% Options som visar vilken dokumenttyp som ska användas.
-% Exakt en av dessa måste anges.
-% Om en doctype läggs till i listan, behöver även makrona i 
-% "MAKRON FÖR FÖRENKLING AV SWITCH PÅ DOCTYPE..." uppdateras
-%\allowdoctype{stadgar}
-%\allowdoctype{allapm}
-%\allowdoctype{pm}
-\DeclareStringOption[doc]{doctype}[doc]
+\DeclareStringOption[doc]{doctype}
 
 
 %Tar med det angivna datumet på titelsidan och högerjusterar allt
@@ -92,17 +72,6 @@
 
 % Processa alla options
 \ProcessKeyvalOptions{\@currname}
-
-
-%Ger ett package error om man skickar in fel option
-%Tar också hand om onödiga varningar av typen "doctype" som "Unused Global Option".
-\makeatletter
-\DeclareOption*{%
-\foreach \x in \@unusedoptionlist {
-\ClassError{\@currname}{The specified option `\x' is not supported! Kolla om du stavat fel eller titta i Guiden vilka options som fungerar.}%
-}
-}
-\makeatother
 \ProcessOptions
 
 
@@ -111,27 +80,25 @@
 % ======================== %
 % Makron för snabb koll mot de olika dokumenttyperna
 \makeatletter
-\newcommand\isstadgar{\equal{0}{1}}
-\newcommand\ispm{\equal{0}{1}}
-\newcommand\isallapm{\equal{0}{1}}
 
 \ifdefstring{\fstyrdok@doctype}{stadgar}{
-\renewcommand\isstadgar{\equal{1}{1}}
 \toggletrue{isstadgar}
+\@expandtwoargs\@removeelement{doctype=stadgar}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
 }
 {
 \ifdefstring{\fstyrdok@doctype}{pm}{
-\renewcommand\ispm{\equal{1}{1}}
 \toggletrue{ispm}
+\@expandtwoargs\@removeelement{doctype=pm}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
 }
 {
 \ifdefstring{\fstyrdok@doctype}{allapm}{
-\renewcommand\isallapm{\equal{1}{1}}
 \toggletrue{isallapm}
+\@expandtwoargs\@removeelement{doctype=allapm}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
 }
 {
 \ifdefstring{\fstyrdok@doctype}{doc}{
 \toggletrue{isdoc}
+\@expandtwoargs\@removeelement{doctype=doc}{\@unusedoptionlist}{\@unusedoptionlist} %UGLY: Hard remove of "unused" option
 }
 {
 \ClassError
@@ -142,10 +109,14 @@
 }
 }
 }
+
+
+%Ger ett Class Error om man skickar in ett option som inte används (antagligen fel)
+\foreach \x in \@unusedoptionlist {
+\ClassError{\@currname}{The specified option `\x' is not supported! Kolla om du stavat fel eller titta i Guiden vilka options som fungerar.}
+}
 \makeatother
-%\newcommand\isstadgar{\equal{\doctype}{stadgar}}
-%\newcommand\ispm{\equal{\doctype}{pm}}
-%\newcommand\isallapm{\equal{\doctype}{allapm}}
+
 
 
 %-----------------------------------------------------------%
@@ -206,32 +177,6 @@
 \RequirePackage[hyperref]{xcolor}
 % hyperref: Skapar bokmärken i pdf-filer, gör hänvisningar till länkar, mm
 \RequirePackage[bookmarks=true,colorlinks=true,linkcolor=headernfooter,urlcolor=headernfooter,linktoc=section]{hyperref}
-
-
-%-----------------------------------------------------------%
-%           MAKRON FÖR ATT FÖRENKLA SWITCH      %
-%           BEROENDE PÅ VILKEN DOCTYPE SOM      %
-%           ANVÄNDS                     %
-%-----------------------------------------------------------%
-% Kolla att endast en doctype används
-%\ifnumcomp{doctypes}{=}{1}
-%{\typeout{Dokumenttyp: \doctype}}
-%{
-%    \ifthenelse{\arabic{doctypes}>1}
-%    {   \ClassError
-%            {fstydrok}
-%            {För många dokumenttyper angedda!}
-%            {Du måste ange exakt 1 dokumenttyp. Tillgängliga dokumenttyper är "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "fstyrdok".}
-%    }
-%    {
-%        \ClassError
-%            {fstyrdok}
-%            {Ingen dokumenttyp angedd!}
-%            {Du måste ange exakt 1 dokumenttyp. Tillgängliga dokumenttyper är "pm", "allapm" och "stadgar", och du anger en av dem som option till dokumentklassen "fstyrdok".}
-%    }
-%}
-
-
 
 
 %========================%
@@ -495,7 +440,6 @@ Datum & Sammanträde & Avsnitt\\
         \maketitle
         \newpage\frontmatter
         % Visa bara ändringshistoriken först för stadgar
-        \ifthenelse{\isstadgar}
         \ifboolexpr{togl {isstadgar}}{\showhistory}{}
         \ftoc
         \end{titlepage}
@@ -514,7 +458,7 @@ Datum & Sammanträde & Avsnitt\\
 }
 
 % Ändringshistorik
-\ifthenelse{\ispm\OR\isstadgar}
+\ifboolexpr{togl {ispm} or togl {isstadgar}}
 {
     \newcommand\showhistory{
     \section*{Ändringshistorik}
@@ -628,7 +572,7 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
 \setlength\cftsecnumwidth{2.2em}
 \setlength\cftsubsecnumwidth{4em}
 
-\ifthenelse{\ispm\OR\isstadgar} % STADGAR ELLER PM
+\ifboolexpr{togl {ispm} or togl {isstadgar}} % STADGAR ELLER PM
 {
     \renewcommand\thesection{\arabic{section}~\S~}
     \renewcommand\thesubsection{\thesection~\arabic{subsection}.}
@@ -643,7 +587,8 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
         \setupenumerate{1}{\thesection}{\arabic{subsection}.\arabic*.}
     }
 }{}
-\ifthenelse{\isallapm} % ALLA PM
+
+\ifboolexpr{togl {isallapm}} % ALLA PM
 {
     \renewcommand\thesubsection{\arabic{subsection}~\S~}
     \titleformat{\section}{\bf \sc \Large}{}{0em}{}
