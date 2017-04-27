@@ -26,7 +26,7 @@
 \newtoggle{isallapm}
 \togglefalse{isallapm}
 \newtoggle{isdoc}
-\toggletrue{isdoc}
+\togglefalse{isdoc}
 
 \newtoggle{IsLscape}
 \togglefalse{IsLscape} %Har portrait som default
@@ -235,7 +235,7 @@ Datum & Sammanträde & Avsnitt\\
 
 % Ny definiton av titel
 \renewcommand\maketitle{
-    \hypersetup{pdftitle={\@title},pdfauthor={\@author}}
+%    \hypersetup{pdftitle={\@title},pdfauthor={\@author}}
     \begin{flushright}
     \includegraphics[width=3cm]{kugghjul}
     \vskip 2cm
@@ -245,6 +245,44 @@ Datum & Sammanträde & Avsnitt\\
   \end{flushright}
 }
 
+
+
+% ======================== %
+%     INSTÄLLNINGAR FÖR TOC                   %
+% ======================== %
+\ifboolexpr{togl {isdoc}}{ %VANLIGT DOKUMENT
+%Formatering av section
+\titlecontents{section}
+[2.5em]
+{}
+{\contentslabel{2.3em}}
+{\hspace*{-2.3em}}
+{\titlerule*[2pc]{}\contentspage}
+
+%Formatering av subsection
+\titlecontents{subsection}
+[4.5em]
+{}
+{\contentslabel{2.3em}}
+{\hspace*{-2.3em}}
+{\titlerule*[2pc]{}\contentspage}
+
+%Endast \section i toc (inte \subsections, etc.)
+\setcounter{tocdepth}{1}
+%Slår av sektionsnumreringen
+\setcounter{secnumdepth}{-2}
+}{ % NÅGOT ANNAT (STADGAR, PM, ALLAPM)
+}
+
+% Kommando för innehållsförteckning med bokmärke i PDF-filen
+%Definierar \ftoc	(fixar färgen också, vill inte ha den grå som andra länkar!)
+\newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\hypersetup{linkcolor=Black}\tableofcontents\hypersetup{linkcolor=headernfooter}\newpage}
+
+
+% ======================== %
+%    		 TITELSIDA  		                %
+% ======================== %
+% Sätt egenskaper av PDF "rätt"
 \newcommand\frontmatter{
     % Sidnummer i romerska siffor
     \pagenumbering{roman}
@@ -256,36 +294,128 @@ Datum & Sammanträde & Avsnitt\\
     \pagestyle{fancy}
 }
 
-% Kommando för innehållsförteckning med bokmärke i PDF-filen
-%Definierar \ftoc	(fixar färgen också, vill inte ha den grå som andra länkar!)
-\newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}\hypersetup{linkcolor=Black}\tableofcontents\hypersetup{linkcolor=headernfooter}\newpage}
+%%%Definierar \ftitlepage
+\newcommand\ftitlepage{
+\hypersetup{pdftitle={\@title}, pdfauthor={\@author}}
+\thispagestyle{empty}
+\pagecolor{fysik}
+\iftoggle{IsLscape}
+{% Om sant, förbered för Lscape
+\hspace{-3in}{\makebox[\paperheight][r]{\raisebox{0pt}[10cm]{
+\includegraphics[width=1.5\textheight]{kugghjul}
+}}}
+\vspace{0.2in}
 
-% Enkelt kommando för titelblad och innehållsförteckning
-\ifboolexpr{togl {isstadgar} or togl {isallapm}}
-{ % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
-    \newcommand\ftitlepage
-    {
-        \begin{titlepage}
-        \maketitle
-        \newpage\frontmatter
-        % Visa bara ändringshistoriken först för stadgar
-        \ifboolexpr{togl {isstadgar}}{\showhistory}{}
-        \ftoc
-        \end{titlepage}
-        \mainmatter
-    }
+\hspace{-\oddsidemargin}\hspace{-1in}\makebox[\paperwidth][c]{\raisebox{0pt}[0cm][0.5in]{
+
+\colorbox{white}{\makebox[\paperwidth][c]{\raisebox{0pt}[0cm][\paperheight]{
+\begin{minipage}[0]{\textwidth}
+\vspace{1.9in}
+\makeatletter
+\iftoggle{DateTitle}
+{% Om sant, högerjustera och sätt datumet på framsidan
+\begin{flushright}
+{
+\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm} \ifdefstring{\@date}{}{}{\@date\par\vspace{0.5cm}}
 }
-{ % Bara ett PM (Titelsida med ändringshistorik)
-    \newcommand\ftitlepage
-    {
-        \begin{titlepage}
-            \maketitle
+\end{flushright}
+} {% Om det inte är sant, gör som vanligt
+{\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}}
+}
+{ \headingfont\fontsize{12}{14} \@fintro }
+\makeatother
+\end{minipage}
+}}}
+}}
+} %Lscape versionen end
+{ %Om det inte är Lscape ska det vara Portrait versionen
+\hspace{-\oddsidemargin}\hspace{-1in}{\makebox[\paperwidth][r]{\raisebox{0pt}[14cm]{
+\includegraphics[width=2\textwidth]{kugghjul}
+}}}
+\vspace{0.5in}
+
+\hspace{-\oddsidemargin}\hspace{-1in}\makebox[\paperwidth][c]{\raisebox{0pt}[0cm][0.5in]{
+
+\colorbox{white}{\makebox[\paperwidth][c]{\raisebox{0pt}[0cm][\paperheight]{
+\begin{minipage}[0]{\textwidth}
+\vspace{3in}
+\makeatletter
+\iftoggle{DateTitle}
+{% Om sant, högerjustera och sätt datumet på framsidan
+\begin{flushright}
+{
+\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}  \ifdefstring{\@date}{}{}{\@date \par\vspace{0.5cm}}
+}
+\end{flushright}
+} {% Om det inte är sant, gör som vanligt
+{\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}}
+}
+\makeatother
+{ \headingfont\fontsize{12}{14} \@fintro }
+\end{minipage}
+}}}
+
+}}
+} %Portrait versionen end
+\newpage
+\pagecolor{White}
+\ifboolexpr{togl {isstadgar} or togl {isallapm}}{ % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
+\frontmatter
+% Visa bara ändringshistoriken först för stadgar
+\ifboolexpr{togl {isstadgar}}{\showhistory}{}
+\ftoc
+\mainmatter
+}
+{ 
+\ifboolexpr{togl {ispm}}{% Bara ett PM (Titelsida med ändringshistorik)
             \showhistory
-            \thispagestyle{empty}
-        \end{titlepage}
-    }
+            %\thispagestyle{empty}
+    }{}
 }
+} %%%ftitlepage end
 
+%Definierar \fintro{<Introduktionstext på förstasidan>}
+%Ger ett blankslag om ej definierat i dokumentet
+\makeatletter
+\newcommand\fintro[1]{\def\@fintro{#1} }
+\@ifundefined{@fintro}{\fintro{ } }{}
+\makeatother
+
+%\makeatletter
+%\renewcommand\maketitle{
+%\begin{center}
+%\headingfont\huge\selectfont\bfseries\MakeTextUppercase\@title\end{center}
+%\vspace{4em}
+%}
+%\makeatother
+%
+%% Enkelt kommando för titelblad och innehållsförteckning
+%\ifboolexpr{togl {isstadgar} or togl {isallapm}}
+%{ % Stadgar eller alla pm (lång titelsida, innehållsförteckning etc)
+%    \newcommand\ftitlepage
+%    {
+%        \begin{titlepage}
+%        \maketitle
+%        \newpage\frontmatter
+%        % Visa bara ändringshistoriken först för stadgar
+%        \ifboolexpr{togl {isstadgar}}{\showhistory}{}
+%        \ftoc
+%        \end{titlepage}
+%        \mainmatter
+%    }
+%}
+%{ % Bara ett PM (Titelsida med ändringshistorik)
+%    \newcommand\ftitlepage
+%    {
+%        \begin{titlepage}
+%            \maketitle
+%            \showhistory
+%            \thispagestyle{empty}
+%        \end{titlepage}
+%    }
+%}
+
+\makeatletter
 % Ändringshistorik
 \ifboolexpr{togl {ispm} or togl {isstadgar}}
 {
