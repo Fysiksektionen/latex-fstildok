@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{fstyrdok}
-\renewcommand\@currname{fstyrdok}
+\ProvidesClass{fstildok}
+\renewcommand\@currname{fstildok}
 
 
 
@@ -10,7 +10,7 @@
 %====================================%
 %kvoption: För att kunna ta emot options på formatet key=value
 \RequirePackage{kvoptions}
-%\SetupKeyvalOptions{family=fstyrdok,prefix=}
+%\SetupKeyvalOptions{family=fstildok,prefix=}
 %keyval: 
 \RequirePackage{keyval}
 %etoolbox: (bland annat) för logisk programering med booleans
@@ -52,7 +52,7 @@
 \toggletrue{ChangeTheFont} %Per standard använder man den font som ingår, kan man inte installera den kan detta vara bra att använda
 
 %=====================================%
-%  OPTIONS FÖR KLASSEN FSEKT-STYRDOK  %
+%  OPTIONS FÖR KLASSEN FSEKT-STILDOK  %
 %=====================================%
 % Options till babel
 \DeclareStringOption[swedish]{language}
@@ -132,7 +132,7 @@
 \typeout{\@currname}
 
 % babel: Avstavning, rubriker på innehållsförteckning m.m., språkanpassat
-\RequirePackage[\fstyrdok@language]{babel}
+\RequirePackage[\fstildok@language]{babel}
 \makeatother
 %fancyhdr: ger kontroll på sidhuvud och sidfot
 \RequirePackage{fancyhdr}
