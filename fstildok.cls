@@ -416,6 +416,11 @@ Datum & Sammanträde & Avsnitt\\
  \setlength\logoheight{\headheight}
 }
 
+\iftoggle{IsLscape} %Liten justering om Landscape
+{
+\addtolength\voffset{0.5in}
+\addtolength{\textheight}{-0.5in}
+}{}
 
 \newcommand\logoname{{F_head_logo_noshadow}}
 
