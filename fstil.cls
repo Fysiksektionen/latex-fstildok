@@ -39,17 +39,17 @@
 %%		3. OPTIONS FÖR FSTIL					L.117				%%
 %%		4. POST-PROCESS OPTIONS					L.176				%%
 %%		5. PAKET								L.197				%%
-%%		6. INSTÄLLNINGAR FÖR FONTER				L.254				%%
-%%		7. SEKTIONSRELATERADE FUNKTIONER		L.275				%%
-%%		8. TABLE OF CONTENT						L.309				%%
-%%		9. TITELSIDA							L.344				%%
-%%		10. SIDHUVUD & SIDFOT					L.476				%%
-%%		11. UNDERSKRIFTER						L.585				%%
-%%		12. VERIFIKATIONER						L.650				%%
-%%		13. MOTIONER							L.714				%%
-%%		14. PARAGRAFER							L.769				%%
-%%		15. ÄNDRINGSHISTORIK					L.840				%%
-%%		16. MAINMATTER							L.879				%%
+%%		6. INSTÄLLNINGAR FÖR FONTER				L.257				%%
+%%		7. SEKTIONSRELATERADE FUNKTIONER		L.278				%%
+%%		8. TABLE OF CONTENT						L.312				%%
+%%		9. TITELSIDA							L.347				%%
+%%		10. SIDHUVUD & SIDFOT					L.479				%%
+%%		11. UNDERSKRIFTER						L.588				%%
+%%		12. VERIFIKATIONER						L.653				%%
+%%		13. MOTIONER							L.717				%%
+%%		14. PARAGRAFER							L.772				%%
+%%		15. ÄNDRINGSHISTORIK					L.843				%%
+%%		16. MAINMATTER							L.882				%%
 %%																	%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -65,7 +65,7 @@
 %====================================%
 %kvoption: För att kunna ta emot options på formatet key=value
 \RequirePackage{kvoptions}
-%\SetupKeyvalOptions{family=fstildok,prefix=}
+%\SetupKeyvalOptions{family=fstil,prefix=}
 %keyval: 
 \RequirePackage{keyval}
 %etoolbox: (bland annat) för logisk programering med booleans
@@ -205,7 +205,7 @@
 \typeout{\@currname}
 
 % babel: Avstavning, rubriker på innehållsförteckning m.m., språkanpassat
-\RequirePackage[\fstildok@language]{babel}
+\RequirePackage[\fstil@language]{babel}
 \makeatother
 %fancyhdr: ger kontroll på sidhuvud och sidfot
 \RequirePackage{fancyhdr}
@@ -248,7 +248,9 @@
 \RequirePackage[usenames,dvipsnames]{color}
 % hyperref: Skapar bokmärken i pdf-filer, gör hänvisningar till länkar, mm
 \RequirePackage[bookmarks=true,colorlinks=true,linkcolor=headernfooter,urlcolor=headernfooter,linktoc=section]{hyperref}
-
+%ifthen/etoolbox: för logisk programering med booleans
+% ifthen är obsolete och ska fasas ut till förmån för etoolbox
+\RequirePackage{ifthen}
 
 
 %==============================%
