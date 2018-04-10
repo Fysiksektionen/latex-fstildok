@@ -330,7 +330,7 @@
 \setcounter{tocdepth}{1}
 %Slår av sektionsnumreringen
 \setcounter{secnumdepth}{-2}
-}{ % NÅGOT ANNAT (STADGAR, PM, ALLAPM)
+}{ % NÅGOT ANNAT (STADGAR, PM, ALLAPM) TODO
 }
 
 % Kommando för innehållsförteckning med bokmärke i PDF-filen
