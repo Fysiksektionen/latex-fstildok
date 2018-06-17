@@ -47,8 +47,8 @@
 %%    11. UNDERSKRIFTER                        L.655                %%
 %%    12. VERIFIKATIONER                       L.720                %%
 %%    13. MOTIONER                             L.784                %%
-%%    14. LISTLIJÖ FÖR PARAGRAFER              L.839                %%
-%%    15. ÄNDRINGSHISTORIK                     L.919                %%
+%%    14. LISTLIJÖ FÖR PARAGRAFER              L.858                %%
+%%    15. ÄNDRINGSHISTORIK                     L.938                %%
 %%                                                                  %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -785,59 +785,75 @@ Fyll i de fem rubrikerna ovan $\&$ fäst kvittot/fakturan synligt på baksidan.}
   \end{tabular}}
 
 %================================%
-%       Mall för motioner        %
+%     Kommandon för motioner     %
 %================================%
-
-\newcommand{\biggerskip}
+\makeatletter
+\newcommand{\@biggerskip}
     {
     \vskip 1cm
     }
 
-\newcommand{\yrkande}[1]{\begin{itemize}#1\end{itemize}}
+\newcommand{\@yrkande}[1]{\begin{itemize}#1\end{itemize}}
 
 \newcommand{\att}[1]{{\bfseries $\text{att}_{#1}$}}
 
 \newcounter{attcount}
 \setcounter{attcount}{0}
-\newcommand{\attsats}{\addtocounter{attcount}{1} \item [{\bfseries $\text{att}_{\arabic{count}}$}]}
-\newcommand\group[1]{#1}
-\newcommand{\signatur}{
-\ifundefined{\group}{}{\ifstrempty{\group}
-{} %Om \group är tom, skriv inget
-{\group\ genom
-\biggerskip}} % annars skriv ut vilken grupp det är
+\newcommand\attsats{\addtocounter{attcount}{1} \item [\att{\arabic{attcount}}] }
+\newcommand\attsatser[1]{\def\@attsatser{#1}}
+\@ifundefined{@attsatser}{\attsatser{ }}{}
+\newcommand\rubrik[1]{\def\@rubrik{#1}}
+\@ifundefined{@rubrik}{\rubrik{ }}{}
+\newcommand\typ[1]{\def\@typ{#1}}
+\@ifundefined{@typ}{\typ{ }}{}
+\newcommand\smdate[1]{\def\@smdate{#1}}
+\@ifundefined{@smdate}{\smdate{ }}{}
+\newcommand\smnr[1]{\def\@smnr{#1}}
+\@ifundefined{@smnr}{\smnr{ }}{}
+\newcommand\name[1]{\def\@name{#1}}
+\@ifundefined{@name}{\name{ }}{}
+\newcommand\bakgrund[1]{\def\@bakgrund{#1}}
+\@ifundefined{@bakgrund}{\bakgrund{ }}{}
+
+\newcommand\iorwe[1]{\def\@iorwe{#1}}
+\@ifundefined{@iorwe}{\iorwe{ }}{}
+\newcommand\group[1]{\def\@group{#1}}
+\newcommand\@signatur{
+\@ifundefined{@group}{\iorwe{Jag}}{\ifstrempty{\@group}
+{\iorwe{Jag}} %Om \group är tom, skriv inget
+{\iorwe{Vi}%
+\@group\ genom
+\@biggerskip}} % annars skriv ut vilken grupp det är
 
   \begin{tabular}[t]{c}
-  	\name
+  	\@name
   \end{tabular}
 }
 
 \newcommand{\motion}{
-\title{\rubrik}
-\date{\smdate}
+\title{\@rubrik}
+\date{\@smdate}
 \author{Fysiksektionen, THS}
 \begin{document}
 \thispagestyle{fancy}
 
-\section{\typ\ till SM\smnr\ \smdate}
+\section{\@typ\ till SM\@smnr\ \@smdate}
 
-\subsection{\rubrik}
+\subsection{\@rubrik}
 
 \subsubsection{Bakgrund}
-\bakgrund
+\@bakgrund
 
-\subsubsection{\typ}
-\iorwe\ yrkar därför på:
+\subsubsection{\@typ}
+\@iorwe yrkar därför på:
 
-\yrkande{
-  \attsats
-}
+\@yrkande{\@attsatser}
 \bigskip
-\signatur
+\@signatur
 
 \end{document}
 }
-
+\makeatother
 
 %=======================================%
 %      LISTMILJÖER FÖR PARAGRAFER       %
