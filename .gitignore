@@ -1,3 +1,5 @@
+## Admin added files
+stiltest.tex
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -178,3 +180,8 @@ TSWLatexianTemp*
 
 # KBibTeX
 *~[0-9]*
+stiltest.pdf
+Stadgar/kugghjul.pdf
+Stadgar/fysiksektionensstadgar.tex
+Stadgar/fysiksektionensstadgar.pdf
+Stadgar/FraktalF.png

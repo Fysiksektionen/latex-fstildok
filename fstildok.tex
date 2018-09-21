@@ -1,0 +1,205 @@
+\documentclass{fstildok}
+%Fysiksketionens grafiska profil
+
+% !TEX TS-program = XeLaTeX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Instruktion till klassen fstildok.cls, fysiksektionens grafiska profil!
+% Dokument skapat av Gustav Gybäck, F-15(gyback) baserat på ett dokument av Thomas Lycken och Emil Ringh, F-08 (eringh)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%För att inkludera kod
+\usepackage{listings}
+\lstset{
+tabsize=1,
+breaklines=true,
+language=TeX,
+basicstyle=\footnotesize
+}
+% Kort kommando för att kunna skriva ut \ i texten.
+\newcommand{\bs}{\textbackslash}
+
+
+\title{Introduktion till klassen \NoCaseChange{\texttt{fstildok.cls}} }
+\date{}
+\author{Fysiksektionen}
+\fintro{Klassen \texttt{fstildok.cls} är en \TeX-klass som har utvecklats för att ge \F ysiksektionen en enhetlig grafisk profil att använda i alla officiella dokument. Detta är en introduktion till hur detta paket fungerar och hur det används.}
+
+\begin{document}
+\ftitlepage
+\ftoc
+
+\section{Klassen fstildok}
+Klassen \texttt{fstildok.cls} är utvecklat för att ge \F ysiksektionen en grafisk profil. Det är en dokumentinställning som baseras på \texttt{article} med options \texttt{10pt, a4paper}. Den ställer också om fonten till \textit{Garamond}, ger ett sidhuvud som innehåller sektionens logotyp samt en sektionsrelaterad sidfot och flera använbara kommandon. Den grafisk profilen är sådan att den efterliknar THS grafiska profil, fast anpassad till \F ysiksektionen. Detta dokument är skrivet med hjälp av fstildok. \texttt{fstildok.cls} är baserad på det tidigare paketet \texttt{fstil.sty}.
+
+\subsection{Installera fstildok}
+För att köra fstildok behöver man ha rätt teckensnitt installerade på sin datorn. Saknar man dessa kan man hitta dem här: \href{https://github.com/Fysiksektionen/latex/tree/master/fonts}{https://github.com/Fysiksektionen/latex/tree/master/fonts}
+Det går även att köra utan rätt teckensnitt om man använder sig av option \texttt{NoFontChange}, inte att rekommendera men det fungerar.
+
+\section{Klassen fstildok}
+Klassen \texttt{fstildok.cls} är utvecklat för att ge \F ysiksektionen en grafisk profil. Det ställer om fonten till \textit{Garamond}, ger ett sidhuvud som innehåller sektionens logotyp samt en sektionsrelaterad sidfot. Den grafisk profilen är sådan att den efterliknar THS grafiska profil, fast anpassad till \F ysiksektionen. Detta dokument är skrivet med hjälp av fstildok. \texttt{fstildok.cls} är baserad på det tidigare paketet \texttt{fstil.sty}.
+
+\subsection{Installera fstildok}
+För att köra fstildok behöver man ha rätt teckensnitt installerade på sin datorn. Saknar man dessa kan man hitta dem här: \href{https://github.com/Fysiksektionen/latex/tree/master/fonts}{https://github.com/Fysiksektionen/latex/tree/master/fonts}
+Det går även att köra utan rätt teckensnitt om man använder sig av option \texttt{NoFontChange}, inte att rekommendera men det fungerar.
+
+Installera typsnitten på din dator:
+\begin{punkter}
+\tompunkt Windows: Öppna kontrollpanelen, gå till \textit{Teckensnitt}/\textit{Fonts} och dra in .TTF-erna. Alternativt dubbelklicka på dem och tryck \textit{installera}/\textit{install} uppe till höger.
+\tompunkt Ubuntu: Dubbelklicka på fonterna och välj installera. Alternativt placera de i \texttt{/home/username/.fonts} och kör kommandot \texttt{sudo fc-cache -fv} i terminalen. Skapa \texttt{/.fonts} om den inte finns.
+\tompunkt Mac: Dubbelklicka på filerna och välj installera. Alternativt placera filerna under \texttt{/Library/Fonts}
+\end{punkter}
+
+
+Orkar man inte installera paketet räcker det nu med att flytta med filen \texttt{fstildok.cls} samt de medföljande bilderna till den map man har dokumentet man önskar kompilera. Om du ska använda det mer än en gång rekommenderas dock att du installerar det:
+\begin{punkter}
+\tompunkt MikTeX: Följ länkarna för \href{http://docs.miktex.org/faq/maintenance.html#styfiles}{kortare} och \href{http://docs.miktex.org/manual/localadditions.html}{längre} instruktioner. I korthet: 
+\begin{punkter}
+\punkt Skapa en map där du vill ha dina \TeX-paket, förslagsvis under \textit{Documents} eller liknande
+\punkt I den mappen skapar du katalogträdet \textit{fstildok/tex/xelatex}, där du lägger \texttt{fstildok.cls} och medföljande bilder m.m. i \textit{xelatex}
+\punkt Öppna programmet  \textit{MikTeX Settings}, välj fliken \textit{roots} och lägg till mappen \textit{fstildok}. Gå sedan tillbaka till fliken \textit{General} och välj \textit{Refresh FNDB}
+\end{punkter}
+\end{punkter}
+
+\subsection{Att använda fstildok}
+För att använda fstil skriver du helt enkelt \texttt{\bs dokumentclass\{fstildok\}} i början av ditt \TeX-dokument.
+
+För att kompilera dokumentet använder du \textit{XeLaTeX}. Detta kan du göra genom att skriva \\ \texttt{>xelatex MITTDOKUMENT.tex} i terminalen, (\textit{XeLaTeX} följer med de flesta \TeX-distributioner), eller välja xelatex i menyn i ditt \TeX-program.
+
+\subsection{Tänk på att}
+Varje dokument behöver en titel, denna sätts med \texttt{\bs title\{TEXT\}} och syns i sidhuvudet. Dessutom förses varje dokument med ett datum, också det i sidhuvudet. Datumet är per automatik den dag du kompilerar dokumentet om du inte sätter det själv med kommandot \texttt{\bs date\{TEXT\}}. Vill du inte ha datum alls kan du sätta det som \texttt{\bs date\{\}}.
+
+Du får \textbf{\underline{inte}} använda \texttt{\bs usepackage[T1]\{fontenc\}}, då kommer typsnittet att bli fel.
+
+Använd inte fler paket än nödvändigt (fstildok har det mesta inbyggt).
+
+fstildok är inställt för att jobba med dokument encodade med \textit{utf8}. Se till så att ditt dokumnet är skrivet i \textit{utf8}, annars fungerar inte å,ä,ö.
+
+\section{Användbara kommandon}
+
+\subsection{Allmänna kommandon}
+\begin{punkter}
+\punkt \texttt{\bs NoCaseChange\{TEXT som inte ska bli Caps i titeln\} }
+\punkt \texttt{\bs href\{http://www.f.kth.se\}\{länk till Fysiksektionens hemsida\} } ger mycket riktigt en  \href{http://www.f.kth.se}{länk till Fysiksektionens hemsida}. Observera färgen!
+\end{punkter}
+
+\subsection{Speciellt för fstildok}
+\begin{punkter}
+\punkt \texttt{\bs ftitlepage} skapar en första sida. Den ser lika dan ut som till detta dokument och innehållet titeln samt en text som definieras av kommandot nedan. Om en vill ha en egen bild på första sidan används \texttt{\bs ftitlepage[BILD.EXT]}.
+\punkt \texttt{\bs fintro\{TEXT\}} definierar det som ska stå på förstasidan. Tänk på att inte göra denna text för lång.
+\punkt \texttt{\bs ftoc} ger en innehållsförteckning (på egen sida).
+\punkt \texttt{\bs F} producerar ett \F.
+\punkt \texttt{\bs noll} skriver ut \noll. Perfekt om man vill skriva \noll an eller \noll egasque.
+\punkt \texttt{\bs fkm} ger klubbmästeriets logga \fkm.
+\punkt \texttt{\bs FN} ger näringslivsnämndens logga \FN.
+\punkt Definierar färgen \texttt{fysik} vilket ger \textcolor{fysik}{en fin orange färg} som kan användas till exempel i kommandot \texttt{\bs textcolor\{fysik\}\{en fin orange färg\}}.
+\punkt \texttt{\bs strike\{text\}} kan användas om man vill ha ett streck genom någon annan \strike{text}.
+\punkt \texttt{\bs sign\{plats\}\{år\}\{namn\}\{titel\}} ger en underskrift från en person (som den brukar se ut på motioner, fast med datum och plats).
+\punkt \texttt{\bs twosign\{plats\}\{år\}\{namn1\}\{namn2\}\{titel1\}\{titel2\}} ger en underskrift från två personer (som den brukar se ut på protokol från SM). Ett förminskat exempel: {\footnotesize
+\twosign{plats}{år}{namn1}{namn2}{titel1}{titel2}
+}
+\punkt \texttt{\bs threesign\{plats\}\{år\}\{namn1\}\{namn2\}\{namn3\}\{titel1\}\{titel2\}\{titel3\}} ger en underskrift från tre personer (som den brukar se ut på protokoll från STYM).
+\punkt \texttt{\bs foursign\{år\}\{namn1\}\{namn2\}\{namn3\}\{namn4\}\{titel1\}\{titel2\}\{titel3\}\{titel4\}} ger en underskrift från fyra personer (som den brukar se ut på tex verksamhetsberättelser). (Stockholm är angivet som plats på grund av begränsingar i \TeX).
+\punkt \texttt{\bs attest\{namn1 \& titel\}\{namn2 \& titel\}} ger sakattest och ekonomisk attest till verifikationer.
+\punkt \texttt{\bs verifikat\{Nämnd\}} ger början på ett verifikat (verifikationsnummer och -datum samt bokföringsdatum).
+\punkt \texttt{\bs utlägg\{Nämnd\}} ger början på en utläggsverifikation (de fem raderna samt det \bs verifikat{} gör).
+\punkt \texttt{\bs ekostart} ger översta raden i tabellen (Kontonamn, kontonummer, KS, Projekt, Debet, Kredit).
+\punkt \texttt{\bs ekorad\{Kontonamn\}\{kontonummer\}} ger en rad i tabellen med valt kontonamn och kontonummer.
+\punkt \texttt{\bs ekoslut} avslutar tabellen och lägger till total. Observera att både \bs ekostart och \bs ekoslut båda behövs, annars kommer det generera ett felmeddelande.
+\punkt \texttt{\bs textrad\{text\}} ger en rad med valfri text och avstånd.
+\punkt \texttt{\bs history{\bs changed{Datum}{SM nr}{Ändrade punkter}}\bs changed{Datum}{SM nr}{Ändrade punkter}...} skapar innehållet i ändringshistoriken som kommer med bl.a. \texttt{\bs ftitlepage} om man skriver Stadgar, Reglemente eller PM.
+\punkt \texttt{\bs lastchanged{SM nr.}} skriver vilket sektionsmöte som senast ändrade på dokumentet.
+\punkt \texttt{\bs historydescription{TEXT}} Definierar brödtext till ändringshistoriken.
+\punkt \texttt{\bs showhistory} skriver ut ändringshistoriken.
+\punkt \texttt{\bs subsubsubsection} vilket är ytterligare en \texttt{\bs section}-nivå som behövs i bl.a. styrdokument.
+\punkt \texttt{\bs begin{punkter} \bs end{punkter}} Skapar en listmiljö där man kan använda fyra färdiga punkter.
+\begin{punkter}
+\punkt \texttt{\bs punkt} skapar en vanlig punk.
+\fetpunkt \texttt{\bs fetpunkt} skapar en punkt med fetstil text.
+\attpunkt \texttt{\bs attpunkt} skapar en attpunkt.
+\tompunkt \texttt{\bs tompunkt} skapar en tom punkt.
+\end{punkter}
+\end{punkter}
+
+\section{Options i fstildok}
+En klass kan laddas med olika options, vilket görs när du deklarerar att du vill använda klassen: \texttt{\bs documentclass[ettOption,ettAnnatOption]\{fstildok\}}. De options som fstil kan hantera är:
+\begin{punkter}
+\punkt \texttt{BigLogo} gör loggan i sidhuvudet mycket större.
+
+\punkt \texttt{DateOnTitle} ser till att datumet läggs till på framsidan. Datumet får en egen rad och allt blir högerjusterat. Blir snyggast ihop med långa titlar som \textit{Verksamhetsberättelse Fysiksektionen} eller \textit{Halvårsrapport Fysiksektionen}.
+
+\punkt \texttt{landscape} sätter om marginalerna och fixar titelsidan så att det blir snyggt på ett liggande dokument. \textbf{OBS:} Behöver inte laddas explicit, görs automatiskt om kommandot ges när du laddar dokumentklassen \texttt{$\bs$documentclass[a4paper,landscape]\{article\}}. Kan dock göras manuelt om man vill.
+
+\punkt \texttt{NoFontChange} behåller standardfonten Latin Modern Roman genom hela dokumentet. Användbart om man har problem med att installera någon av fonterna som används av fstil i normala fall, då Latin Modern Roman är standardfonten.
+
+\punkt \texttt{plain} tar bort all text i sidhuvud/sidfot.
+
+\punkt \texttt{NoPageNumbering} tar bort sidnumreringen i sidhuvudet.
+
+\punkt \texttt{fkm} gör om dokumentet enligt \fkm s grafiska profil.
+
+\punkt \texttt{stadgar} ändrar på inställningar så att layout blir enligt Fysiksektionens Stadgar och Reglemente.
+
+\punkt \texttt{pm} ändrar på inställningar för pm.
+
+\punkt \texttt{allapm} ändra på inställningar för ett dokument med alla pm.
+
+\punkt \texttt{doc} om man vill ha ett vanligt dokument enligt sektionens grafiska profil. Det är default om man inte väljer \texttt{stadgar},\texttt{pm} eller \texttt{allapm}.
+
+\end{punkter}
+
+\section{Ett exempel}
+Detta är ett enkelt exemple på hur man använder paketet.
+
+\begin{lstlisting}
+\documentclass{fstildok}
+
+\title{Ett exempel}
+\date{Dagens datum!}
+\author{Emil Ringh}
+\fintro{Detta är en introduktionstext. Den kan vara ett par rader lång...}
+
+\begin{document}
+\ftitlepage
+\ftoc
+
+\section{Detta är första rubriken}
+\F ysiker vet att \noll\ gånger \noll\ är \noll.
+\subsection{Denna syns inte i Innehållsförteckningen}
+Här kan man skriva mer.
+
+\section{Del två av detta exempel}
+\F ysiksektionen använder ibland {\Huge \textcolor{fysik}{\F}} som symbol även om Kugghjulet är den officiella symbolen.
+\end{document}
+\end{lstlisting}
+
+\section{Versionshistorik - \texttt{fstildok.cls}}
+\begin{punkter}
+\punkt Juni 2018. Färdigställt sammanflätningen av fstil.sty och styrdok.cls samt korrigerat layout. Skrivet av Emil Ringh (\F-08) och Gustav Gybäck (\F-15)
+\end{punkter}
+
+
+\section{Versionshistorik - \texttt{fstil.sty}}
+\begin{punkter}
+\punkt November 2011. Färdigställt. Skrivet av: Tomas Lycken (\F-08) och Emil Ringh (\F-08)
+\punkt Januari 2012. Introducerat options-handeling i paketet. Kan nu även hantera option \texttt{landscape} till dokumentklassen genom att anpassa marginaler och titelsidan så att det blir snyggt. Skrivet av: Emil Ringh (\F-08)
+\punkt September 2012. Option \texttt{DateOnTitle} tillagt. Fixat en bugg med att \texttt{\bs fkm} inte kunde skrivas i Sections. Skrivet av: Emil Ringh (\F-08)
+\punkt Oktober 2012. La till kommandona \texttt{\bs fn}, \texttt{\bs twosign}, \texttt{\bs threesign}, \texttt{\bs foursign}. Skrivet av: Emil Ringh (\F-08)
+\punkt Oktober 2012. La till kommandot \texttt{\bs strike} samt den studentikosa tillämpningen \texttt{\bs carlsven}. Skrivet av: Emil Ringh, (\F-08)
+\punkt Januari 2013. Nu krävs det inte att man skriver ett datum, anger man istället \texttt{\bs date\{\}} så blir det en tom rad i sidhuvudet. Skrivet av: Emil Ringh, (\F-08)
+\punkt Januari 2013.  Options \texttt{plain} och \texttt{BigLogo} tillagda. Skrivet av: Tomas Lycken, (\F-08)
+\punkt Januari 2014. Options \texttt{NoFontChange} tillagt. Skrivet av: Emil Ringh, (\F-08)
+\punkt November 2015. Bytte adress till där Konsulatet faktiskt ligger. Skrivet av: Emil Ringh, (\F-08)
+\punkt Maj 2016. Kommandon som rör verifikat och ekonomi:  \texttt{\bs attes}, \texttt{\bs verifikat}, \texttt{\bs utlägg}, \texttt{\bs ekostart}, \texttt{\bs ekorad}, \texttt{\bs ekoslut}, \texttt{\bs textrad}. Skrivet av: Mårten Vuorinen, (\F-12)
+\punkt September 2016. Bytte adress till där Konsulatet faktiskt ligger (flyttat igen!). Skrivet av: Emil Ringh, (\F-08)
+\punkt April 2017. La till kommandon för motioner. Skrivet av: Johan Engvall, (\F-07)
+\punkt Maj 2017. La till option att ta bort sidnumrering i sidhuvudet. Skrivet av Anton Lu, (\F-15)
+\punkt Mars 2018. La till möjligheten att välja egen bild till titelsidan (\texttt{\bs ftitlepage[kugghjul.pdf]}). Skrivet av: Gustav Gybäck, (\F-15)
+\punkt Mars 2018. La till \fkm s grafisa profil. Skrivet av: Gustav Gybäck, (\F-15)
+\punkt Mars 2018. Flyttade ner det vänstra sidhuvudet i \texttt{landscape} så att titeln inte ligger på kanten. Skriven av: Gustav Gybäck, (\F-15)
+\end{punkter}
+
+\clearpage
+\section{\texttt{fstildok.cls}}
+\lstinputlisting{fstildok.cls}
+
+\end{document}

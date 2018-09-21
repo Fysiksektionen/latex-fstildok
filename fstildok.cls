@@ -1,61 +1,60 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%																	%%
-%%		KLASSEN FSTIL 												%%
-%%		BASSERAD PÅ PAKETET FSTIL									%%
-%%																	%%
-%%		PAKETET FSTIL												%%
-%%		Skrivet av Tomas Lycken, F-08, under 2011					%%
-%%		Senast uppdaterat av Tomas Lycken, F-08, 2011				%%
-%%		Senast uppdaterat av Emil Ringh, F-08, 2011					%%
-%%		Senast uppdaterat av Emil Ringh, F-08, 2012					%%
-%%		Senast uppdaterat av Emil Ringh, F-08, 2013					%%
-%%		Senast uppdaterat av Tomas Lycken, F-08, 2013				%%
-%%		Senast uppdaterat av Emil Ringh, F-08, 2014					%%
-%%		Senast uppdaterat av Mårten Vuorinen, F-12, 2016			%%
-%%		Senast uppdaterat av Johan Engvall, F-07, 2017				%%
-%%		Senast uppdaterat av Anton Lu, F-15, 2017					%%
-%%		Senast uppdaterad av Gustav Gybäck, F-15, 2018				%%
-%%																	%%
-%%		KLASSEN FSTIL												%%
-%%		Skriven av Emil Ringh F-08 och Gustav Gybäck, F-15 2018		%%
-%%																	%%
-%%		Klassen fstil importerar några paket och gör ett antal nya	%%
-%%		kommandon tillgängliga, samt anpassar dokumentet till		%%
-%%		THS grafiska profil som den såg ut 2011. (Paktetet upp-		%%
-%%		dateras lämpligen när den grafiska profilen gör det).		%%
-%%																	%%
-%%		För att kunna använda klassen krävs att dokumentet kom- 	%%
-%%		pileras i XeLaTeX, som bl.a. finns på skolans system, och	%%
-%%		inkluderas i varje godtycklig version av TeX Live-distribu- %%
-%%		tionen, samt MiKTeX											%%
-%%																	%%
-%%		Klassen har en tillhörande tex-fil som heter fstil.tex		%%
-%%		innehållande beskrivningar till samtliga funktioner			%%
-%%		i klassen.													%%
-%%																	%%
-%%		KLASSEN BESTÅR AV:											%%
-%%		1. PAKET FÖR OPTION	PROCESSING 			L.62				%%
-%%		2. INTRODUCERA VARIABLER 				L.78				%%
-%%		3. OPTIONS FÖR FSTIL					L.117				%%
-%%		4. POST-PROCESS OPTIONS					L.176				%%
-%%		5. PAKET								L.197				%%
-%%		6. INSTÄLLNINGAR FÖR FONTER				L.254				%%
-%%		7. SEKTIONSRELATERADE FUNKTIONER		L.275				%%
-%%		8. TABLE OF CONTENT						L.309				%%
-%%		9. TITELSIDA							L.344				%%
-%%		10. SIDHUVUD & SIDFOT					L.476				%%
-%%		11. UNDERSKRIFTER						L.585				%%
-%%		12. VERIFIKATIONER						L.650				%%
-%%		13. MOTIONER							L.714				%%
-%%		14. PARAGRAFER							L.769				%%
-%%		15. ÄNDRINGSHISTORIK					L.840				%%
-%%		16. MAINMATTER							L.879				%%
-%%																	%%
+%%                                                                  %%
+%%    KLASSEN FSTILDOK                                              %%
+%%    BASSERAD PÅ PAKETET FSTIL                                     %%
+%%                                                                  %%
+%%    PAKETET FSTIL                                                 %%
+%%    Skrivet av Tomas Lycken, F-08, under 2011                     %%
+%%    Senast uppdaterat av Tomas Lycken, F-08, 2011                 %%
+%%    Senast uppdaterat av Emil Ringh, F-08, 2011                   %%
+%%    Senast uppdaterat av Emil Ringh, F-08, 2012                   %%
+%%    Senast uppdaterat av Emil Ringh, F-08, 2013                   %%
+%%    Senast uppdaterat av Tomas Lycken, F-08, 2013                 %%
+%%    Senast uppdaterat av Emil Ringh, F-08, 2014                   %%
+%%    Senast uppdaterat av Mårten Vuorinen, F-12, 2016              %%
+%%    Senast uppdaterat av Johan Engvall, F-07, 2017                %%
+%%    Senast uppdaterat av Anton Lu, F-15, 2017                     %%
+%%    Senast uppdaterad av Gustav Gybäck, F-15, 2018                %%
+%%                                                                  %%
+%%    KLASSEN FSTILDOK                                              %%
+%%    Skriven av Emil Ringh F-08 och Gustav Gybäck, F-15 2018       %%
+%%                                                                  %%
+%%    Klassen fstildok importerar några paket och gör ett antal nya %%
+%%    kommandon tillgängliga, samt anpassar dokumentet till         %%
+%%    THS grafiska profil som den såg ut 2011. (Paktetet upp-       %%
+%%    dateras lämpligen när den grafiska profilen gör det).         %%
+%%                                                                  %%
+%%    För att kunna använda klassen krävs att dokumentet kom-       %%
+%%    pileras i XeLaTeX, som bl.a. finns på skolans system, och     %%
+%%    inkluderas i varje godtycklig version av TeX Live-distribu-   %%
+%%    tionen, samt MiKTeX                                           %%
+%%                                                                  %%
+%%    Klassen har en tillhörande tex-fil som heter fstildok.tex     %%
+%%    innehållande beskrivningar till samtliga funktioner           %%
+%%    i klassen.                                                    %%
+%%                                                                  %%
+%%    KLASSEN BESTÅR AV:                                            %%
+%%    1. PAKET FÖR OPTION	PROCESSING           L.61                 %%
+%%    2. INTRODUCERA VARIABLER                 L.77                 %%
+%%    3. OPTIONS FÖR FSTIL                     L.119                %%
+%%    4. POST-PROCESS OPTIONS                  L.180                %%
+%%    5. PAKET                                 L.201                %%
+%%    6. INSTÄLLNINGAR FÖR FONTER              L.258                %%
+%%    7. SEKTIONSRELATERADE FUNKTIONER         L.291                %%
+%%    8. TABLE OF CONTENT                      L.326                %%
+%%    9. TITELSIDA                             L.400                %%
+%%    10. SIDHUVUD & SIDFOT                    L.535                %%
+%%    11. UNDERSKRIFTER                        L.655                %%
+%%    12. VERIFIKATIONER                       L.720                %%
+%%    13. MOTIONER                             L.784                %%
+%%    14. LISTLIJÖ FÖR PARAGRAFER              L.858                %%
+%%    15. ÄNDRINGSHISTORIK                     L.938                %%
+%%                                                                  %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{fstil}
-\renewcommand\@currname{fstil}
+\ProvidesClass{fstildok}
+\renewcommand\@currname{fstildok}
 
 
 
@@ -75,9 +74,9 @@
 
 
 
-% ======================== %
-%  INTRODUCERA VARIABLER   %
-% ======================== %
+%========================%
+% INTRODUCERA VARIABLER  %
+%========================%
 % Switch på vilken doc-typ det är.
 % Default är "vanlig" (isdoc) men alla ska vara false här!
 \newtoggle{isstadgar}
@@ -113,9 +112,12 @@
 \togglefalse{fkmDocument}
 
 \newcommand{\titleImg}{kugghjul} % Definierar vilken bild som ska visas när \ftitlepage används.
+\newcommand\logoname{{F_head_logo_noshadow}}
+
+
 
 %=====================================%
-%  		OPTIONS FÖR FSTIL			  %
+%         OPTIONS FÖR FSTILDOK        %
 %=====================================%
 % Options till babel
 \DeclareStringOption[swedish]{language}
@@ -154,11 +156,6 @@
 % Tar bort sidnumrering
 \DeclareOption{NoPageNumbering}{\toggletrue{RemovePageNumbering}}
 
-% Gör om layout enligt fkm*s grafiska profil
-\DeclareOption{fkm}{%
-\toggletrue{fkmDocument}%
-\renewcommand{\titleImg}{kugghjul_fkm.pdf}%
-}
 
 %Gör det möjligt att få till 'landscape'
 \DeclareOption{landscape}{
@@ -167,15 +164,22 @@
 \PassOptionsToPackage{\CurrentOption}{geomerty}
 }
 
+% Gör om layout enligt fkm*s grafiska profil
+\DeclareOption{fkm}{%
+  \toggletrue{fkmDocument}%
+  \renewcommand{\titleImg}{kugghjul_fkm.pdf}%
+  \renewcommand\logoname{{fkmlogo.pdf}}
+}
+
 
 % Processa alla options
 \ProcessKeyvalOptions{\@currname}
 \ProcessOptions
 
 
-% ======================== %
-%   Post-process options   %
-% ======================== %
+%========================%
+%  Post-process options  %
+%========================%
 
 %Kolla att bara en document type är använd
 %samt sätt "doc" som default om det inte är någon given
@@ -247,7 +251,7 @@
 %color: Tillåter definition av färger och användning av standard färger genom namnangivelser
 \RequirePackage[usenames,dvipsnames]{color}
 % hyperref: Skapar bokmärken i pdf-filer, gör hänvisningar till länkar, mm
-\RequirePackage[bookmarks=true,colorlinks=true,linkcolor=headernfooter,urlcolor=headernfooter,linktoc=section]{hyperref}
+\RequirePackage[bookmarks=true,colorlinks=true,linkcolor=textgray,urlcolor=textgray,linktoc=section]{hyperref}
 
 
 
@@ -264,13 +268,25 @@
 \newfontfamily\headingfont{Latin Modern Roman}
 }
 
+% Skapar en ny section nivå. \subsubsubsection som bl.a. används i §1.10.4.1 i Stadgan
+\titleclass{\subsubsubsection}{straight}[\subsection]
+\newcounter{subsubsubsection}[subsubsection]
+
 
 % Ställ typsnitt och spacing för rubriker
 \titleformat*{\section}{\headingfont\fontsize{16}{18}\selectfont\bfseries}
+\titlespacing{\section}{0pt}{*2}{0pt}
 \titleformat*{\subsection}{\headingfont\fontsize{14}{16}\selectfont}
+\titlespacing{\subsection}{0pt}{*2}{-2pt}
 
-\titleformat*{\subsubsection}{\headingfont\itshape}
+\titleformat*{\subsubsection}{\headingfont\fontsize{12}{14}\itshape}
 \titlespacing{\subsubsection}{0pt}{*2}{-5pt}
+
+\titleformat{\subsubsubsection}{\headingfont\normalsize\itshape\selectfont}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}{0pt}{*2}{-5pt}
+\makeatletter
+\def\toclevel@subsubsubsection{4}
+\makeatother
 
 %=====================================%
 %   SEKTIONSRELATERADE KOMMANDON      %
@@ -280,6 +296,7 @@
 %Definiera färgen "orange", enligt stadgarnas definition
 %\definecolor{orange}{wave}{612.2}
 %\definecolor{dark-blue}{rgb}{0,0,.1}
+\definecolor{textgray}{gray}{0.4} %Definierar en gråfärg som är 40% svart,  används i header och footer
 
 
 %Definierar \F  =>  ett snyggt Fysik-F
@@ -306,17 +323,60 @@
 
 
 
-% ======================== %
-%  INSTÄLLNINGAR FÖR TOC   %
-% ======================== %
-\ifboolexpr{togl {isdoc}}{ %VANLIGT DOKUMENT
+%========================%
+% INSTÄLLNINGAR FÖR TOC  %
+%========================%
+\ifboolexpr{togl {isstadgar} or togl {isallapm} or togl {ispm}}{ % Table of Content (STADGAR, PM, ALLAPM)
+%Formatering av section
+\makeatletter
+\def\l@section#1#2{\pagebreak[3] % Tagen från https://latex.org/forum/viewtopic.php?t=21336
+    \vskip 1.0em plus 1pt  % space above chapter line
+    \@tempdima 1.5em       % width of box holding chapter number
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \bfseries            % Boldface removed.
+      \leavevmode          % TeX command to enter horizontal mode.
+      #1\hfil \hbox to\@pnumwidth{\hss #2}\medskip\par%% <= \medskip inserted
+    \endgroup}
+\makeatother
+
+%Formatering av subsection
+\titlecontents{subsection}
+[5em]
+{}
+{\contentslabel{3.3em}}
+{\hspace*{-2.3em}}
+{\titlerule*[2pc]{}\contentspage}
+
+%Formatering av subsubsection
+\titlecontents{subsubsection}
+[7.5em]
+{}
+{\contentslabel{4.3em}}
+{\hspace*{-2.3em}}
+{\titlerule*[2pc]{}\contentspage}
+
+%Formatering av subsubsubsection
+\titlecontents{subsubsubsection}
+[10em]
+{}
+{\contentslabel{5.3em}}
+{\hspace*{-2.3em}}
+{\titlerule*[2pc]{}\contentspage}
+
+% toc är tre nivåer djup. Alltså \section, \subsections och \subsubsection
+\setcounter{tocdepth}{4}
+%Sätter sektionsnumreringen till 3 djup. (-2 för att ta bort den)
+\setcounter{secnumdepth}{4}
+}{ %VANLIGT DOKUMENT
 %Formatering av section
 \titlecontents{section}
 [2.5em]
 {}
 {\contentslabel{2.3em}}
 {\hspace*{-2.3em}}
-{\titlerule*[2pc]{}\contentspage}
+{\titlerule*[3pc]{}\contentspage}
 
 %Formatering av subsection
 \titlecontents{subsection}
@@ -324,26 +384,25 @@
 {}
 {\contentslabel{2.3em}}
 {\hspace*{-2.3em}}
-{\titlerule*[2pc]{}\contentspage}
+{\titlerule*[4pc]{}\contentspage}
 
 %Endast \section i toc (inte \subsections, etc.)
 \setcounter{tocdepth}{1}
 %Slår av sektionsnumreringen
 \setcounter{secnumdepth}{-2}
-}{ % NÅGOT ANNAT (STADGAR, PM, ALLAPM) TODO
 }
 
 % Kommando för innehållsförteckning med bokmärke i PDF-filen
 %Definierar \ftoc	(fixar färgen också, vill inte ha den grå som andra länkar!)
 \newcommand\ftoc{\pdfbookmark[2]{Innehåll}{toc}
 \hypersetup{linkcolor=Black}\tableofcontents
-\hypersetup{linkcolor=headernfooter}\newpage}
+\hypersetup{linkcolor=textgray}\newpage}
 
 
 
-% ======================== %
-%        TITELSIDA         %
-% ======================== %
+%========================%
+%       TITELSIDA        %
+%========================%
 % Sätt egenskaper av PDF "rätt"
 \newcommand\frontmatter{
     % Sidnummer i romerska siffor
@@ -365,7 +424,7 @@
 \pagecolor{fysik}
 \iftoggle{IsLscape}
 {% ÄR LANDSCAPE
-\ifthenelse{\equal{#1}{}}{
+\ifstrempty{#1}{
 \hspace{-3in}{\makebox[\paperheight][r]{\raisebox{0pt}[10cm]{
 \includegraphics[width=1.5\textheight]{\titleImg}
 }}}
@@ -385,13 +444,14 @@
 {% ÄR DATE ON TITLE
 \begin{flushright}
 {
-\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm} \ifdefstring{\@date}{}{}{\@date\par\vspace{0.5cm}}
+\headingfont\fontsize{30}{36}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.1cm} \ifdefstring{\@date}{}{}{\@date\par\vspace{0.5cm}}
 }
 \end{flushright}
-} {% INTE DATE ON TITLE
-{\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}}
+}{% INTE DATE ON TITLE
+{\headingfont\fontsize{30}{36}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.1cm}}
 }
-{ \headingfont\fontsize{12}{14} \@styrdokdate\@fintro }
+
+{ \headingfont\@styrdokdate\@fintro }
 \end{minipage}
 }}}
 }}
@@ -400,7 +460,7 @@
 % Två hårdkodade sätt att inkludera en bild på titelsidan.
 %
 % Standard placering av bilden för titelsidan. Används oftast med bilden: kugghjul
-\ifthenelse{\equal{#1}{}}{
+\ifstrempty{#1}{
 \hspace{-\oddsidemargin}\hspace{-1in}{\makebox[\paperwidth][r]{\raisebox{0pt}[14cm]{%
 \includegraphics[width=2\textwidth]{\titleImg}%
 }}}
@@ -418,17 +478,17 @@
 \begin{minipage}[0]{\textwidth}
 \vspace{3in}
 
+\begin{flushright}
 \iftoggle{DateTitle}
 {% ÄR DATE ON TITLE
-\begin{flushright}
 {
-\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}  \ifdefstring{\@date}{}{}{\@date \par\vspace{0.5cm}}
+\headingfont\fontsize{30}{36}\selectfont\bfseries\MakeTextUppercase\@title\par \vspace{0.1cm} \ifdefstring{\@date}{}{}{\@date \par\vspace{0.5cm}}
 }
-\end{flushright}
 } {% INTE DATE ON TITLE
-{\headingfont\fontsize{20}{24}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.5cm}}
+{\headingfont\fontsize{30}{36}\selectfont\bfseries\MakeTextUppercase\@title\par\vspace{0.1cm}}
 }
-{ \headingfont\fontsize{12}{14} \@styrdokdate\@fintro }
+{ \headingfont \@styrdokdate\vspace{0.5cm}\@fintro }
+\end{flushright}
 \end{minipage}
 }}}
 
@@ -440,6 +500,7 @@
 \frontmatter
 % Visa bara ändringshistoriken först för stadgar
 \ifboolexpr{togl {isstadgar}}{\showhistory}{}
+\newpage
 \ftoc
 \mainmatter
 }
@@ -460,11 +521,12 @@
 \makeatother
 
 
-%Definierar ett MARCO som sätter datumet på framsidan, automatiskt om det är styrdokument.
+%Definierar ett MACRO som sätter redigeringsdatumet på framsidan om det är styrdokument.
 \makeatletter
 \ifboolexpr{togl {isstadgar} or togl {isallapm} or togl {ispm}}
 {
-\def\@styrdokdate{Fysiksektionen, THS \par Uppdaterat \@date\par}
+\def\@styrdokdate{\fontsize{20}{24}\selectfont\textcolor{textgray}{ Fysiksektionen, THS} \par
+\textcolor{textgray}{\fontsize{12}{14}\itshape\selectfont Senast uppdaterat \@lastchanged}\par}
 }
 {
 \def\@styrdokdate{}
@@ -477,7 +539,6 @@
 %  INSTÄLLNINGAR FÖR SIDHUVUD & SIDFOT	 %
 %========================================%
 
-\definecolor{headernfooter}{gray}{0.40} %Definierar en gråfärg som är 40% svart,  används i header och footer
 
 \setlength\headheight{70pt} % Default är 12 pt, men detta passar bra till loggan
 \newlength\logowidth
@@ -518,39 +579,47 @@
 
 \fancyheadoffset[R]{.7\logowidth}
 
-\iftoggle{fkmDocument}{\newcommand\logoname{{fkmlogo.pdf}}}{\newcommand\logoname{{F_head_logo_noshadow}}}
-\rhead{\raisebox{-0.5\height}{\includegraphics[height=\logoheight]{\logoname}}\hspace{\logoxoffset}}
+
+\fancyhead[R]{\raisebox{-0.5\height}{\includegraphics[height=\logoheight]{\logoname}}\hspace{\logoxoffset}}
+
 
 \fancyhead[L]{%
-\iftoggle{HeadIsFancy}{%
-\textcolor{headernfooter}{%
-\iftoggle{IsLscape}{\biggerskip}{} % Rättar till placeringen av sidhuvudet för liggande
-\headingfont\textbf{\@title}\\
-\ifdefstring{\@date}{}{%Om @date är en tom sträng, skriv inte den raden
-}{%Annars skriv ut datumet
-\@date\\}
-\iftoggle{RemovePageNumbering}{}{%
-Sid. \thepage~ av { \pageref{LastPage}} }
+  \iftoggle{HeadIsFancy}{%
+    \textcolor{textgray}{%
+      \iftoggle{IsLscape}{\biggerskip}{} % Rättar till placeringen av sidhuvudet för liggande
+      \headingfont\textbf{%
+	      \ifboolexpr{togl {ispm} or togl {isstadgar} or togl {isallapm}}
+		      {Fysiksektionens \@title\\%
+		      \@lastchanged\\}
+		      {\@title\\}
+      }
+      \ifdefstring{\@date}{}{%Om @date är en tom sträng, skriv inte den raden
+        }{%Annars skriv ut datumet
+        \@date\\}
+      \iftoggle{RemovePageNumbering}{}{%
+        Sid. \thepage~ av { \pageref{LastPage}} }
+    }
+  }{}
 }
-}{}
-}
+
 
 
 \fancyhead[C]{}
 
 \fancyfoot[C]{
-\iftoggle{HeadIsFancy}{%
-\rule{\textwidth}{0.75pt}
-\textcolor{headernfooter}{
-\footnotesize
-\begin{center}
-\begin{tabular}{p{0.25\paperwidth}p{0.15\paperwidth}p{0.15\paperwidth}p{0.15\paperwidth}}
-Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
- \F ysiksektionen, THS 100 44 Stockholm &   802411-8948 &   Brinellvägen 89  & { \href{http://www.f.kth.se}{www.f.kth.se} }
-\end{tabular}
-\end{center}
-}
-}{}
+  \iftoggle{HeadIsFancy}{%
+    \rule{\textwidth}{0.75pt}
+    \textcolor{fysik}{
+      \footnotesize
+      \begin{center}
+        \begin{tabular}{p{0.25\paperwidth}p{0.15\paperwidth}p{0.15\paperwidth}p{0.15\paperwidth}}
+          Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
+          \F ysiksektionen, THS 100 44 Stockholm &   802411-8948 &   Brinellvägen 89  & { \href{http://www.f.kth.se}
+          {www.f.kth.se} }
+        \end{tabular}
+      \end{center}
+    }
+  }{}
 }
 \makeatother
 
@@ -564,26 +633,30 @@ Postadress: & Organisationsnummer: & Besöksadress: & Hemsida: \\
     \pagestyle{fstil_page}
     
     \ifboolexpr{togl {isstadgar} or togl {isallapm}}{
-      \pagenumbering{roman} % Romerska siffror i sidnumreringen
+      \pagenumbering{roman} % Rommerska siffror i sidnumreringen
       \fancyhead[L]{%
-      \iftoggle{HeadIsFancy}{%
-      \textcolor{headernfooter}{%
-      \headingfont\textbf{\@title}\\
-      \ifdefstring{\@date}{}{%Om @date är en tom sträng, skriv inte den raden
-}{%Annars skriv ut datumet
-\@date\\}
-Sid. \thepage }
-}{}
-}
-}
-{}
+        \iftoggle{HeadIsFancy}{%
+          \textcolor{textgray}{%
+		        \headingfont\textbf{%
+  			    Fysiksektionens \@title\\
+	  		    \@lastchanged\\
+		      }
+          \ifdefstring{\@date}{}{%Om @date är en tom sträng, skriv inte den raden
+            }{%Annars skriv ut datumet
+            \@date\\}
+          \iftoggle{RemovePageNumbering}{}{%
+            Sid. \thepage~ av { \pageref{LastPage}} }
+          }
+        }{}
+      }
+    }{}
 }% END plain PAGESTYLE 
 
 \makeatother
 
 
 %====================================%
-%       UNDERSKRIFTER                %
+%           UNDERSKRIFTER            %
 %====================================%
 %Kommandon för att generera snygga underskrifter
 %\sign{plats}{år}{namn}{titel}
@@ -647,9 +720,9 @@ den \hspace{.5cm}/\hspace{.5cm} #1 && den \hspace{.5cm}/\hspace{.5cm} #1 && den 
 \end{tabular}
 \end{center}}
 
-% ======================================= %
-%      Kommandon för verifikationer       %
-% ======================================= %
+%=======================================%
+%     Kommandon för verifikationer      %
+%=======================================%
 
 %\attest{namn och titel för sakattest}{namn och titel för ekonomisk attest} skapar raderna för attestering
 \newcommand{\attest}[2]{
@@ -711,69 +784,85 @@ Fyll i de fem rubrikerna ovan $\&$ fäst kvittot/fakturan synligt på baksidan.}
     \hline
   \end{tabular}}
 
-% ================================ %
-%      Kommandon för motioner      %
-% ================================ %
-
-\newcommand{\biggerskip}
+%================================%
+%     Kommandon för motioner     %
+%================================%
+\makeatletter
+\newcommand{\@biggerskip}
     {
     \vskip 1cm
     }
 
-\newcommand{\yrkande}[1]{\begin{itemize}#1\end{itemize}}
+\newcommand{\@yrkande}[1]{\begin{itemize}#1\end{itemize}}
 
 \newcommand{\att}[1]{{\bfseries $\text{att}_{#1}$}}
 
-\newcounter{count}
-\setcounter{count}{0}
-\newcommand{\attsats}{\addtocounter{count}{1} \item [{\bfseries $\text{att}_{\arabic{count}}$}]}
+\newcounter{attcount}
+\setcounter{attcount}{0}
+\newcommand\attsats{\addtocounter{attcount}{1} \item [\att{\arabic{attcount}}] }
+\newcommand\attsatser[1]{\def\@attsatser{#1}}
+\@ifundefined{@attsatser}{\attsatser{ }}{}
+\newcommand\rubrik[1]{\def\@rubrik{#1}}
+\@ifundefined{@rubrik}{\rubrik{ }}{}
+\newcommand\typ[1]{\def\@typ{#1}}
+\@ifundefined{@typ}{\typ{ }}{}
+\newcommand\smdate[1]{\def\@smdate{#1}}
+\@ifundefined{@smdate}{\smdate{ }}{}
+\newcommand\smnr[1]{\def\@smnr{#1}}
+\@ifundefined{@smnr}{\smnr{ }}{}
+\newcommand\name[1]{\def\@name{#1}}
+\@ifundefined{@name}{\name{ }}{}
+\newcommand\bakgrund[1]{\def\@bakgrund{#1}}
+\@ifundefined{@bakgrund}{\bakgrund{ }}{}
 
-\newcommand{\signatur}{
-  \ifthenelse{\equal{\group}{}}
-{} %Om \group är tom, skriv inget
-{\group\ genom
-\biggerskip} % annars skriv ut vilken grupp det är
+\newcommand\iorwe[1]{\def\@iorwe{#1}}
+\@ifundefined{@iorwe}{\iorwe{ }}{}
+\newcommand\group[1]{\def\@group{#1}}
+\newcommand\@signatur{
+\@ifundefined{@group}{\iorwe{Jag}}{\ifstrempty{\@group}
+{\iorwe{Jag}} %Om \group är tom, skriv inget
+{\iorwe{Vi}%
+\@group\ genom
+\@biggerskip}} % annars skriv ut vilken grupp det är
 
   \begin{tabular}[t]{c}
-  	\name
+  	\@name
   \end{tabular}
 }
 
 \newcommand{\motion}{
-\title{\rubrik}
-\date{\smdate}
+\title{\@rubrik}
+\date{\@smdate}
 \author{Fysiksektionen, THS}
 \begin{document}
 \thispagestyle{fancy}
 
-\section{\typ\ till SM\smnr\ \smdate}
+\section{\@typ\ till SM\@smnr\ \@smdate}
 
-\subsection{\rubrik}
+\subsection{\@rubrik}
 
 \subsubsection{Bakgrund}
-\bakgrund
+\@bakgrund
 
-\subsubsection{\typ}
-\iorwe\ yrkar därför på:
+\subsubsection{\@typ}
+\@iorwe yrkar därför på:
 
-\yrkande{
-  \attsatser
-}
+\@yrkande{\@attsatser}
 \bigskip
-\signatur
+\@signatur
 
 \end{document}
 }
-
+\makeatother
 
 %=======================================%
 %      LISTMILJÖER FÖR PARAGRAFER       %
 %=======================================%
-\newenvironment{punkter}{\begin{enumerate}}{\end{enumerate}}
+\newenvironment{punkter}{\begin{itemize}}{\end{itemize}}
 \newcommand\punkt{\normalfont\item}
 \newcommand\fetpunkt{\normalfont\item\bfseries}
-\newcommand\attpunkt{\normalfont\item\textbf{att}\ }
-\newcommand\tompunkt{\normalfont\item\hspace{1em}}
+\newcommand\attpunkt{\normalfont\item[\textbf{att}\ ]}
+\newcommand\tompunkt{\normalfont\item[\hspace{1em}]}
 
 \newcommand\paragraf[1]{#1 \S}
 \newcommand\setupenumerate[3]{
@@ -786,10 +875,14 @@ Fyll i de fem rubrikerna ovan $\&$ fäst kvittot/fakturan synligt på baksidan.}
 \setlength\cftsubsecnumwidth{4em}
 
 
+
+
 \ifboolexpr{togl {ispm} or togl {isstadgar}} % STADGAR ELLER PM
 {
     \renewcommand\thesection{\arabic{section}~\S~}
-    \renewcommand\thesubsection{\thesection~\arabic{subsection}.}
+    \renewcommand\thesubsection{\arabic{section}.\arabic{subsection}~\S~}
+    \renewcommand\thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}~\S~}
+	\renewcommand\thesubsubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{subsubsubsection}~\S~}
     \newcommand\header[1]
     {
         \section{#1}
@@ -799,6 +892,11 @@ Fyll i de fem rubrikerna ovan $\&$ fäst kvittot/fakturan synligt på baksidan.}
     {
         \subsection{#1}
         \setupenumerate{1}{\thesection}{\arabic{subsection}.\arabic*.}
+    }
+    \newcommand\subsubheader[1]
+    {
+        \subsubsection{#1}
+        \setupenumerate{1}{\thesubsection}{\arabic{subsubsection}.\arabic*.}
     }
 }{}
 
@@ -842,14 +940,20 @@ Fyll i de fem rubrikerna ovan $\&$ fäst kvittot/fakturan synligt på baksidan.}
 % ======================== %
 \makeatletter
 
+% Beskrivande text under rubriken Ändringshistorik
+\newcommand\historydescription[1]{\def\@historydescription{#1} }
+\@ifundefined{@historydescription}{\historydescription{ } }{}
+
 % Lista över ändringar
 \newcommand\changed[3]{#1 & #2 & #3\\}
+\newcommand\lastchanged[1]{\def\@lastchanged{#1}}
+\@ifundefined{@lastchanged}{\lastchanged{ }}{}
 \newcommand\@history{}
 \newcommand\history[1]{
 \renewcommand\@history{
 \begin{tabular}{lll}
 Datum & Sammanträde & Avsnitt\\
-\hline
+%\hline
 #1
 \end{tabular}
 }
@@ -863,12 +967,14 @@ Datum & Sammanträde & Avsnitt\\
 {
     \newcommand\showhistory{
     \section*{Ändringshistorik}
+    \@historydescription \par
     \@history
     }
 }
 {
     \newcommand\showhistory{
     \subsection*{Ändringshistorik}
+    \@historydescription \par
     \@history
     }
 }
